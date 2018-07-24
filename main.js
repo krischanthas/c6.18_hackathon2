@@ -5,7 +5,7 @@ var userObj = {};
 
 function initializeApp() {
     applyClickHandlers();
-   
+   displayMap();
 }
 
 function applyClickHandlers() {
