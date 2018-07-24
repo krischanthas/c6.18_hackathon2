@@ -35,10 +35,9 @@ function clearInput() {
 
 
 function displayMap() {
+    
     var lati = 33.634867;
     var long = -117.740499;
-    debugger;
-
     var mapProp = {
         center: new google.maps.LatLng(lati, long),
         zoom: 13,
@@ -61,17 +60,16 @@ function displayMap() {
             lng: long
         },
     });
-    // marker.addListener('click', toggleBounce);
-    // $(".container").append(map);
+    marker.addListener('click', toggleBounce);
 }
 
-// function toggleBounce() {
-//     if (marker.getAnimation() !== null) {
-//         marker.setAnimation(null);
-//     } else {
-//         marker.setAnimation(google.maps.Animation.BOUNCE);
-//     }
-// }
+function toggleBounce() {
+    if (marker.getAnimation() !== null) {
+        marker.setAnimation(null);
+    } else {
+        marker.setAnimation(google.maps.Animation.BOUNCE);
+    }
+}
 
 function checkNames(response) {
     for (var i = 0; i < response.businesses.length; i++) {
@@ -80,14 +78,9 @@ function checkNames(response) {
             userObj = response.businesses[i];
             break;
         }
-
     }
     displayMap();
-
 }
-//     getDataPhotos();
-
-
 
 
 // function displayModal() {
