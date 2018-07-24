@@ -53,3 +53,7 @@ function displayModal(){
 function displayPictures(){
     //create divs and append onto the modal
 }
+
+function getDataPictures(){
+
+}
