@@ -5,7 +5,7 @@ var userObj = {};
 
 function initializeApp() {
     applyClickHandlers();
-
+    getDataPhotos();
 }
 
 function applyClickHandlers() {
@@ -246,6 +246,7 @@ function getDataPhotos() {
                 var url = "https://farm1.staticflickr.com/" + serverID + "/" + photoID + "_" + secretID + ".jpg";
                 console.log(url);
                 var  carouselImage =  $(".carousel-image" + (pIndex + 1));
+                console.log(carouselImage)
                 carouselImage.prepend('<img src="' + url + '" />');
                 carouselImage.children().addClass("d-block w-100");
             }
