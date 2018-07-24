@@ -29,25 +29,27 @@ function clearInput() {
 }
 
 
-// function toggleBounce() {
-//     if (marker.getAnimation() !== null) {
-//         marker.setAnimation(null);
-//     } else {
-//         marker.setAnimation(google.maps.Animation.BOUNCE);
-//     }
-// }
 
 
 
-// 
+
 
 function displayMap() {
-    var lati = userObj.coordinates.latitude;
-    var long = userObj.coordinates.longitude;
+    var lati = 33.634867;
+    var long = -117.740499;
     var mapProp = {
         center: new google.maps.LatLng(lati, long),
         zoom: 13,
     };
+    if (userObj.coordinates) {
+        lati = userObj.coordinates.latitude;
+        long = userObj.coordinates.longitude;
+        mapProp = {
+            center: new google.maps.LatLng(lati, long),
+            zoom: 13,
+        };
+    }
+   debugger;
     var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
     marker = new google.maps.Marker({
         map: map,
@@ -79,7 +81,8 @@ function checkNames(response) {
         }
     }
     displayMap();
-    getDataPhotos();
+}
+//     getDataPhotos();
 }
 
 
@@ -92,50 +95,8 @@ function checkNames(response) {
 //     //display the name, url, & the pictures onto the modal
 // }
 
-// function displayPictures() {
-//     //create divs and append onto the modal
-// }
-
-// function getDataPictures() {
-
-// }
 
 
-function getDataPhotos() {
-    debugger;
-    var theData = {
-        api_key: "b5e905e415b7b888752b23f5629b2410",
-        method: "flickr.photos.search",
-        format: "json",
-        nojsoncallback: 1,
-        text: userInput,
-        privacy_filter: 1,
-        per_page: 3,
-    }
-
-    var ajaxOption = {
-        data: theData,
-        dataType: 'json',
-        url: "https://api.flickr.com/services/rest",
-        method: 'GET',
-        success: function (response) {
-            console.log(response);
-            var photoArray = response.photos.photo;
-            console.log(photoArray);
-            for (var pIndex = 0; pIndex < photoArray.length; pIndex++) {
-                debugger;
-                var currentPhoto = photoArray[pIndex];
-                var serverID = currentPhoto.server;
-                var photoID = currentPhoto.id;
-                var secretID = currentPhoto.secret;
-                var url = "https://farm1.staticflickr.com/" + serverID + "/" + photoID + "_" + secretID + ".jpg";
-                console.log(url);
-                $(".carousel-image" + (i + 1)).prepend('<img src="' + url + '" />').addClass('d-block', 'w-100');
-            }
-        }
-    }
-    $.ajax(ajaxOption);
-}
 //yelp data
 function getData(userInput) {
     var settings = {
