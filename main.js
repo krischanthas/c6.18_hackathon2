@@ -5,9 +5,7 @@ var userObj = {};
 
 function initializeApp() {
     applyClickHandlers();
-    console.log('in initlizeApp')
-    //getData();
-    // dropPin();
+   
 }
 
 function applyClickHandlers() {
@@ -21,6 +19,8 @@ function applyClickHandlers() {
 function getUserInput() {
     userInput = $('.inputForm').val();
     console.log(userInput);
+    // getWeatherData(userInput);
+    getVideoData();
     getData(userInput);
 }
 
@@ -56,9 +56,11 @@ function clearInput() {
 // }
 
 function checkNames(response) {
-    debugger;
     for (var i = 0; i < response.businesses.length; i++) {
         var indivName = response.businesses[i].name;
+    }
+}
+function myMap() {
     }}
 function displayMap() {
     var mapProp = {
@@ -86,9 +88,9 @@ function toggleBounce() {
     }
 }
 
-function checkNames() {
-    for (var i = 0; i < result.length; i++) {
-        var indivName = result.businesses[i].name;
+function checkNames(response) {
+    for (var i = 0; i < response.length; i++) {
+        var indivName = response.businesses[i].name;
         if (indivName === userInput) {
             userObj = response.businesses[i];
             return;
@@ -187,3 +189,46 @@ function getData(userInput) {
     $.ajax(settings);
 
 }
+
+function getVideoData() {
+    var theData = {
+        'q': userInput + ' live stream',
+        'maxResults': 1,
+    }
+    var ajaxConfig = {
+        data: theData,
+        dataType: 'json',
+        method: 'POST',
+        url: 'https://s-apis.learningfuze.com/hackathon/youtube/search.php',
+        success: function(response){
+            console.log('success response', response);
+            // var videoData = response["video"]["title"][0];
+            // console.log('video data' , videoData);
+        },
+        error: function(response){
+            console.log('request error');
+        }
+    }
+    $.ajax(ajaxConfig);
+}
+
+function getWeatherData(userInput){
+    var ajaxConfig = {
+        url: 'http://api.openweathermap.org/data/2.5/weather?q=' + userInput + '&units=imperial&APPID=f91cd80c3f28fab67ca696381fb71d30',
+        dataType: 'json',
+        method: 'get',
+        success: function(response) {
+            var weather = response.main.temp;
+            console.log(weather);
+            var cityName = response.name;
+        //    $('.mainDisplay').text(`Current weather in ${cityName}: ${weather}`);
+        
+        },
+        error: function (){
+            console.log('requestError');
+        }
+    }
+    
+    $.ajax(ajaxConfig);
+}
+
