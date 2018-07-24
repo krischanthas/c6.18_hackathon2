@@ -47,7 +47,7 @@ function displayMap() {
 function displayModal() {
     var name = userObj.name;
     var url = userObj.url;
-
+    getDataPhotos();
     displayPictures();
     //display the name, url, & the pictures onto the modal
 }
@@ -83,12 +83,13 @@ function getData() {
 }
 
 function getDataPhotos() {
+    debugger;
     var theData = {
         api_key: "b5e905e415b7b888752b23f5629b2410",
         method: "flickr.photos.search",
         format: "json",
         nojsoncallback: 1,
-        text: "",
+        text: "Huntington Beach",
         privacy_filter: 1,
         per_page: 3,
     }
