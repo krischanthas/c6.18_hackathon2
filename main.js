@@ -60,8 +60,7 @@ function checkNames(response) {
         var indivName = response.businesses[i].name;
     }
 }
-function myMap() {
-    }}
+
 function displayMap() {
     var mapProp = {
         center: new google.maps.LatLng(33.6189, -117.9298),
