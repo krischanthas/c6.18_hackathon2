@@ -37,6 +37,8 @@ function clearInput() {
 function displayMap() {
     var lati = 33.634867;
     var long = -117.740499;
+    debugger;
+
     var mapProp = {
         center: new google.maps.LatLng(lati, long),
         zoom: 13,
@@ -49,7 +51,6 @@ function displayMap() {
             zoom: 13,
         };
     }
-   debugger;
     var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
     marker = new google.maps.Marker({
         map: map,
@@ -60,7 +61,7 @@ function displayMap() {
             lng: long
         },
     });
-    marker.addListener('click', toggleBounce);
+    // marker.addListener('click', toggleBounce);
     // $(".container").append(map);
 }
 
@@ -79,11 +80,13 @@ function checkNames(response) {
             userObj = response.businesses[i];
             break;
         }
+
     }
     displayMap();
+
 }
 //     getDataPhotos();
-}
+
 
 
 
