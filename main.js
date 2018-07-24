@@ -58,7 +58,7 @@ function displayMap() {
         },
     });
     marker.addListener('click', toggleBounce);
-    $(".container").append(map);
+    // $(".container").append(map);
 }
 
 // function toggleBounce() {
@@ -78,6 +78,7 @@ function checkNames(response) {
         }
     }
     displayMap();
+    getDataPhotos();
 }
 
 
@@ -98,41 +99,41 @@ function checkNames(response) {
 
 // }
 
-// function getDataPhotos() {
-//     debugger;
-//     var theData = {
-//         api_key: "b5e905e415b7b888752b23f5629b2410",
-//         method: "flickr.photos.search",
-//         format: "json",
-//         nojsoncallback: 1,
-//         text: "Huntington Beach",
-//         privacy_filter: 1,
-//         per_page: 3,
-//     }
+function getDataPhotos() {
+    debugger;
+    var theData = {
+        api_key: "b5e905e415b7b888752b23f5629b2410",
+        method: "flickr.photos.search",
+        format: "json",
+        nojsoncallback: 1,
+        text: userInput,
+        privacy_filter: 1,
+        per_page: 3,
+    }
 
-//     var ajaxOption = {
-//         data: theData,
-//         dataType: 'json',
-//         url: "https://api.flickr.com/services/rest",
-//         method: 'GET',
-//         success: function (response) {
-//             console.log(response);
-//             var photoArray = response.photos.photo;
-//             console.log(photoArray);
-//             for (var pIndex = 0; pIndex < photoArray.length; pIndex++) {
-//                 debugger;
-//                 var currentPhoto = photoArray[pIndex];
-//                 var serverID = currentPhoto.server;
-//                 var photoID = currentPhoto.id;
-//                 var secretID = currentPhoto.secret;
-//                 var url = "https://farm1.staticflickr.com/" + serverID + "/" + photoID + "_" + secretID + ".jpg";
-//                 console.log(url);
-//                 $(".carousel-image" + (i + 1)).prepend('<img src="' + url + '" />').addClass('d-block', 'w-100');
-//             }
-//         }
-//     }
-//     $.ajax(ajaxOption);
-// }
+    var ajaxOption = {
+        data: theData,
+        dataType: 'json',
+        url: "https://api.flickr.com/services/rest",
+        method: 'GET',
+        success: function (response) {
+            console.log(response);
+            var photoArray = response.photos.photo;
+            console.log(photoArray);
+            for (var pIndex = 0; pIndex < photoArray.length; pIndex++) {
+                debugger;
+                var currentPhoto = photoArray[pIndex];
+                var serverID = currentPhoto.server;
+                var photoID = currentPhoto.id;
+                var secretID = currentPhoto.secret;
+                var url = "https://farm1.staticflickr.com/" + serverID + "/" + photoID + "_" + secretID + ".jpg";
+                console.log(url);
+                $(".carousel-image" + (i + 1)).prepend('<img src="' + url + '" />').addClass('d-block', 'w-100');
+            }
+        }
+    }
+    $.ajax(ajaxOption);
+}
 //yelp data
 function getData(userInput) {
     var settings = {
