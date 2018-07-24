@@ -1,11 +1,11 @@
 $(document).ready(initializeApp);
-
 var userInput;
 var userObj = {};
 
+
 function initializeApp() {
     applyClickHandlers();
-   displayMap();
+
 }
 
 function applyClickHandlers() {
@@ -17,7 +17,7 @@ function applyClickHandlers() {
 }
 
 function getUserInput() {
-    userInput = $('.inputForm').val();
+    var userInput = $('.inputForm').val();
     console.log(userInput);
     // getWeatherData(userInput);
     //getVideoData();
@@ -36,6 +36,7 @@ function clearInput() {
 //         marker.setAnimation(google.maps.Animation.BOUNCE);
 //     }
 // }
+
 
 
 // 
@@ -99,6 +100,7 @@ function checkNames(response) {
 
 // }
 
+
 function getDataPhotos() {
     debugger;
     var theData = {
@@ -143,8 +145,8 @@ function getData(userInput) {
         "data": {
             term: userInput,
             location: "Orange County",
+            api_key: "w5ThXNvXEMnLlZYTNrvrh7Mf0ZGQNFhcP6K-LPzktl8NBZcE1_DC7X4f6ZXWb62mV8HsZkDX2Zc4p86LtU0Is9kI0Y0Ug0GvwC7FvumSylmNLfLpeikscQZw41pXW3Yx",
             categories: "beaches",
-            api_key: "zzf1Se87XvEVw2BAqlvjapO5XR0GOM4B98AzIyTaU_HmviO161LYR_0d_bSFAfKMDl5gGDy27f65BeQVqOO8d4C1QOjbG95ciZYSMWHNtlNTSvn531q-pYlKfaJWW3Yx",
         },
         success: function (response) {
             // debugger;
@@ -156,9 +158,19 @@ function getData(userInput) {
             console.log('getData error: ', err);
         }
     }
-
+    
     $.ajax(settings);
+    
 
+
+    
+
+    displayPictures();
+    //display the name, url, & the pictures onto the modal
+}
+
+function displayPictures() {
+    //create divs and append onto the modal
 }
 
 // function getVideoData() {
@@ -192,8 +204,7 @@ function getData(userInput) {
 //             var weather = response.main.temp;
 //             console.log(weather);
 //             var cityName = response.name;
-//         //    $('.mainDisplay').text(`Current weather in ${cityName}: ${weather}`);
-        
+//         //    $('.mainDisplay').text(`Current weather in ${cityName}: ${weather}`);     
 //         },
 //         error: function (){
 //             console.log('requestError');
@@ -202,4 +213,46 @@ function getData(userInput) {
     
 //     $.ajax(ajaxConfig);
 // }
+
+
+
+function getDataPhotos() {
+    var theData = {
+        api_key: "b5e905e415b7b888752b23f5629b2410",
+        method: "flickr.photos.search",
+        format: "json",
+        nojsoncallback: 1,
+        text: "newport beach",
+        privacy_filter: 1,
+        per_page: 3,
+    }
+
+    var ajaxOption = {
+        data: theData,
+        dataType: 'json',
+        url: "https://api.flickr.com/services/rest",
+        method: 'GET',
+        success: function (response) {
+            console.log(response);
+            var photoArray = response.photos.photo;
+            console.log(photoArray);
+            debugger;
+            for (var pIndex = 0; pIndex < photoArray.length; pIndex++) {
+                debugger;
+                var currentPhoto = photoArray[pIndex];
+                var serverID = currentPhoto.server;
+                var photoID = currentPhoto.id;
+                var secretID = currentPhoto.secret;
+                var url = "https://farm1.staticflickr.com/" + serverID + "/" + photoID + "_" + secretID + ".jpg";
+                console.log(url);
+                var  carouselImage =  $(".carousel-image" + (pIndex + 1));
+                carouselImage.prepend('<img src="' + url + '" />');
+                carouselImage.children().addClass("d-block w-100");
+            }
+               
+        }
+    }
+    $.ajax(ajaxOption);
+}
+
 
