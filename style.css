@@ -1,0 +1,19 @@
+.backButton {
+        text-shadow: 1px 1px 1px #ccc;
+        font-size: 2.5em;
+    
+}
+body{
+    margin: 0;
+}
+.maps-container{
+    height: 100vh;
+    width: 100vw;
+}
+#googleMap{
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 400px;
+    width: 100%;
+}
