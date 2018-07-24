@@ -200,8 +200,9 @@ function getVideoData() {
         url: 'https://s-apis.learningfuze.com/hackathon/youtube/search.php',
         success: function(response){
             console.log('success response', response);
-            // var videoData = response["video"]["title"][0];
-            // console.log('video data' , videoData);
+            var videoId = response["video"][0].title.id;
+           
+            
         },
         error: function(response){
             console.log('request error');
