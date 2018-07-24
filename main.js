@@ -49,7 +49,6 @@ function toggleBounce() {
         marker.setAnimation(google.maps.Animation.BOUNCE);
     }
 }
-=======
 
 function checkNames() {
     for (var i = 0; i < result.length; i++) {
