@@ -40,6 +40,7 @@ function displayMap() {
         center: new google.maps.LatLng(lat, long),
         zoom: 5,
     };
+
     var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
 }
 
@@ -115,3 +116,4 @@ function getDataPhotos() {
     }
     $.ajax(ajaxOption);
 }
+
