@@ -7,14 +7,28 @@
 body{
     margin: 0;
 }
+.container{
+    width: 100%;
+}
 .maps-container{
     height: 60vh;
-    width: 100vw;
+    width: 100%;
+    /* right: 100%; */
 }
+
+.inputContainer{
+    /* position: absolute; */
+    /* right: 50%; */
 #googleMap{
-    position: absolute;
+    /* position: absolute; */
     left: 0;
     top: 0;
+    height: 100px;
+    width: 100%;
+}
+#googleMap{
+    /* position: absolute; */
+    /* left: 50%; */
     height: 400px;
     width: 100%;
 }
@@ -27,3 +41,10 @@ body{
     height: 50vh;
 }
 
+.headerContainer {
+    background-image: url("images/wavesback.gif");
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 30%
+
+}
