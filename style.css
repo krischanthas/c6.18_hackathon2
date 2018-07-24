@@ -38,3 +38,10 @@ body{
     height: 50vh;
 }
 
+.headerContainer {
+    background-image: url("images/wavesback.gif");
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 30%
+
+}
