@@ -60,28 +60,6 @@ function getDataPictures() {
 
 }
 
-function getData() {
-    var theData = {
-        term: "beaches",
-        location: "irvine",
-    }
-    var ajaxOption = {
-        data: theData,
-        dataType: 'json',
-        url: "https://api.yelp.com/v3/businesses/search",
-        headers: {
-            Authorization: "Bearer w5ThXNvXEMnLlZYTNrvrh7Mf0ZGQNFhcP6K-LPzktl8NBZcE1_DC7X4f6ZXWb62mV8HsZkDX2Zc4p86LtU0Is9kI0Y0Ug0GvwC7FvumSylmNLfLpeikscQZw41pXW3Yx",
-            "Cache-Control": "no-cache",
-            "Postman-Token": "9ed2ef7e-20f4-4f46-9901-3f48cb726c22",
-        },
-        method: 'GET',
-        success: function (response) {
-            console.log(response);
-        }
-    }
-    $.ajax(ajaxOption);
-}
-
 function getDataPhotos() {
     debugger;
     var theData = {
@@ -118,3 +96,24 @@ function getDataPhotos() {
     $.ajax(ajaxOption);
 }
 
+function getData() {
+    var settings = {
+        "url": "https://yelp.ongandy.com/businesses",
+        "method": "POST",
+        "dataType": "JSON",
+        "data": {
+            term: "beach",
+            location: "irvine",
+            api_key: "w5ThXNvXEMnLlZYTNrvrh7Mf0ZGQNFhcP6K-LPzktl8NBZcE1_DC7X4f6ZXWb62mV8HsZkDX2Zc4p86LtU0Is9kI0Y0Ug0GvwC7FvumSylmNLfLpeikscQZw41pXW3Yx",
+        },
+        success: function (response) {
+            console.log(response);
+        },
+        error: function (err) {
+            console.log(err);
+        }
+    }
+
+    $.ajax(settings);
+
+}
