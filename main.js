@@ -64,7 +64,7 @@ function checkNames(response) {
             return;
         }
     }
-    // displayMap();
+    displayMap();
 }
 
 // function displayMap() {
