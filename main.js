@@ -5,6 +5,7 @@ var userObj = {};
 
 function initializeApp() {
     applyClickHandlers();
+    getDataPhotos();
 }
 
 function applyClickHandlers() {
@@ -139,6 +140,7 @@ function getDataPhotos() {
         text: "Huntington Beach",
         privacy_filter: 1,
         per_page: 3,
+        category    : "beaches"
     }
 
     var ajaxOption = {
