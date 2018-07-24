@@ -29,51 +29,34 @@ function clearInput() {
 }
 
 
-// function myMap() {
-//     var mapProp = {
-//         center: new google.maps.LatLng(33.6189, -117.9298),
-//         zoom: 13,
-//     };
-//     var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
-//     marker = new google.maps.Marker({
-//         map: map,
-//         draggable: true,
-//         animation: google.maps.Animation.DROP,
-//         position: {
-//             lat: 33.6189,
-//             lng: -117.9298
-//         },
-//     });
-//     marker.addListener('click', toggleBounce);
-// }
 
-// function toggleBounce() {
-//     if (marker.getAnimation() !== null) {
-//         marker.setAnimation(null);
-//     } else {
-//         marker.setAnimation(google.maps.Animation.BOUNCE);
-//     }
-// }
 
-function checkNames(response) {
-    for (var i = 0; i < response.businesses.length; i++) {
-        var indivName = response.businesses[i].name;
-    }
-}
 
 function displayMap() {
+    
+    var lati = 33.634867;
+    var long = -117.740499;
     var mapProp = {
-        center: new google.maps.LatLng(33.6189, -117.9298),
+        center: new google.maps.LatLng(lati, long),
         zoom: 13,
     };
+    if (userObj.coordinates) {
+        lati = userObj.coordinates.latitude;
+        long = userObj.coordinates.longitude;
+        mapProp = {
+            center: new google.maps.LatLng(lati, long),
+            zoom: 13,
+        };
+    }
+   debugger;
     var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
     marker = new google.maps.Marker({
         map: map,
         draggable: true,
         animation: google.maps.Animation.DROP,
         position: {
-            lat: 33.6189,
-            lng: -117.9298
+            lat: lati,
+            lng: long
         },
     });
     marker.addListener('click', toggleBounce);
@@ -88,28 +71,15 @@ function toggleBounce() {
 }
 
 function checkNames(response) {
-    for (var i = 0; i < response.length; i++) {
+    for (var i = 0; i < response.businesses.length; i++) {
         var indivName = response.businesses[i].name;
         if (indivName === userInput) {
             userObj = response.businesses[i];
-            return;
+            break;
         }
     }
-    // displayMap();
+    displayMap();
 }
-
-// function displayMap() {
-//     // lat = userObj.coordinates.latitude;
-//     lat = userObj.coordinates[0];
-//     //long = userObj.coordinates.longitude;
-//     long = userObj.coordinates[1];
-//     var mapProp = {
-//         center: new google.maps.LatLng(lat, long),
-//         zoom: 5,
-//     };
-
-//     var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
-// }
 
 // function displayModal() {
 //     var name = userObj.name;
