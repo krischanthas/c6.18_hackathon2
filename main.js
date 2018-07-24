@@ -5,17 +5,21 @@ var userObj = {};
 
 function initializeApp() {
     applyClickHandlers();
+   
 }
 
 function applyClickHandlers() {
     $('.submitButton').on('click', getUserInput);
     $('.clearButton').on('click', clearInput);
+    $('.inputForm').on('click', clearInput);
 
 }
 
 function getUserInput() {
     userInput = $('.inputForm').val();
     console.log(userInput);
+    getWeatherData(userInput);
+    // getVideoData();
 }
 
 function clearInput() {
@@ -117,3 +121,45 @@ function getDataPhotos() {
     $.ajax(ajaxOption);
 }
 
+// function getVideoData() {
+//     var theData = {
+//         query: userInput + ' live stream',
+//         maxResults: 1,
+//         type: 'video',
+//     }
+//     var ajaxConfig = {
+//         data: theData,
+//         dataType: 'json',
+//         method: 'GET',
+//         url: 'https://s-apis.learningfuze.com/hackathon/youtube/search.php',
+//         success: function(response){
+//             console.log('success response', response);
+//             // var videoData = response["video"]["title"][0];
+//             // console.log('video data' , videoData);
+//         },
+//         error: function(response){
+//             console.log('request error');
+//         }
+//     }
+//     $.ajax(ajaxConfig);
+// }
+
+function getWeatherData(userInput){
+    var ajaxConfig = {
+        url: 'http://api.openweathermap.org/data/2.5/weather?q=' + userInput + '&units=imperial&APPID=f91cd80c3f28fab67ca696381fb71d30',
+        dataType: 'json',
+        method: 'get',
+        success: function(response) {
+            var weather = response.main.temp;
+            console.log(weather);
+            var cityName = response.name;
+        //    $('.mainDisplay').text(`Current weather in ${cityName}: ${weather}`);
+        
+        },
+        error: function (){
+            console.log('requestError');
+        }
+    }
+    
+    $.ajax(ajaxConfig);
+}
