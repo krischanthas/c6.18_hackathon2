@@ -21,9 +21,10 @@ function applyClickHandlers() {
 function getUserInput() {
     userInput = $('.inputForm').val();
     console.log(userInput);
-    // getWeatherData(userInput);
+    getWeatherData(userInput);
     //getVideoData();
     getData(userInput);
+    displayModal();
 }
 
 function clearInput() {
@@ -93,6 +94,9 @@ function checkNames(response) {
 function displayModal() {
     var name = userObj.name;
     var url = userObj.url;
+    $('.popup-container').css("display", "block");
+    $('.modal-title').text(name);
+    
     getDataPhotos();
     displayPictures();
     //display the name, url, & the pictures onto the modal
@@ -159,24 +163,25 @@ function displayPictures() {
 //     $.ajax(ajaxConfig);
 // }
 
-// function getWeatherData(userInput){
-//     var ajaxConfig = {
-//         url: 'http://api.openweathermap.org/data/2.5/weather?q=' + userInput + '&units=imperial&APPID=f91cd80c3f28fab67ca696381fb71d30',
-//         dataType: 'json',
-//         method: 'get',
-//         success: function(response) {
-//             var weather = response.main.temp;
-//             console.log(weather);
-//             var cityName = response.name;
-//         //    $('.mainDisplay').text(`Current weather in ${cityName}: ${weather}`);     
-//         },
-//         error: function (){
-//             console.log('requestError');
-//         }
-//     }
+function getWeatherData(userInput){
+    var ajaxConfig = {
+        url: 'http://api.openweathermap.org/data/2.5/weather?q=' + userInput + '&units=imperial&APPID=f91cd80c3f28fab67ca696381fb71d30',
+        dataType: 'json',
+        method: 'get',
+        success: function(response) {
+            var weather = response.main.temp;
+            console.log(weather);
+            var cityName = response.name;
+           $('.mainDisplay').text(`Current weather: ${weather}`); 
+           $('.modal-title').text(cityName);    
+        },
+        error: function (){
+            console.log('requestError');
+        }
+    }
     
-//     $.ajax(ajaxConfig);
-// }
+    $.ajax(ajaxConfig);
+}
 
 
 
@@ -186,9 +191,10 @@ function getDataPhotos() {
         method: "flickr.photos.search",
         format: "json",
         nojsoncallback: 1,
-        text: "newport beach",
+        text: userInput,
         privacy_filter: 1,
         per_page: 3,
+        tags: 'beach',
     }
 
     var ajaxOption = {
@@ -200,9 +206,8 @@ function getDataPhotos() {
             console.log(response);
             var photoArray = response.photos.photo;
             console.log(photoArray);
-            debugger;
-            for (var pIndex = 0; pIndex < photoArray.length; pIndex++) {
-                debugger;
+            clearCarousel()
+                        for (var pIndex = 0; pIndex < photoArray.length; pIndex++) {
                 var currentPhoto = photoArray[pIndex];
                 var serverID = currentPhoto.server;
                 var photoID = currentPhoto.id;
@@ -220,4 +225,7 @@ function getDataPhotos() {
     $.ajax(ajaxOption);
 }
 
+function clearCarousel(){
+    $('.carousel-item').empty();
+}
 
