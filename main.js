@@ -1,12 +1,12 @@
 $(document).ready(initializeApp);
 var userInput;
 var userObj = {};
-var imageSearch = new google.search.ImageSearch();
-imageSearch.setSearchCompleteCallback(this, searchComplete, null);
-imageSearch.execute("Long Beach");
-var results = imageSearch.results;
+// var imageSearch = new google.search.ImageSearch();
+// imageSearch.setSearchCompleteCallback(this, searchComplete, null);
+// imageSearch.execute("Long Beach");
+// var results = imageSearch.results;
 
-console.log(results);
+// console.log(results);
 
 function initializeApp() {
 
@@ -27,7 +27,7 @@ function applyClickHandlers() {
     $('.modal-backdrop').on('click', function(){
         $('.videoModal').addClass('hidden');
     })
-    $('.close').click(clearModal);
+    $('#closeModal').click(clearModal);
 
 }
 // function removeContent(){
@@ -261,5 +261,6 @@ function clearCarousel() {
 }
 
 function clearModal(){
-    $('.popup-container').modal("hidden");
+    console.log("clicked");
+    $('.popup-container').css("display", "hidden");
 }
