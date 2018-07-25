@@ -5,7 +5,7 @@ var userObj = {};
 
 function initializeApp() {
     applyClickHandlers();
-    getDataPhotos();
+    
     
 }
 
@@ -13,7 +13,6 @@ function applyClickHandlers() {
     console.log('in applyClickHandlers')
     $('.submitButton').on('click', getUserInput);
     $('.clearButton').on('click', clearInput);
-    $('.submitButton').on('click', )
 
 }
 
@@ -21,8 +20,10 @@ function getUserInput() {
      userInput = $('.inputForm').val();
     console.log(userInput);
     getWeatherData(userInput);
-    //getVideoData();
+    getVideoData();
     getData(userInput);
+    getDataPhotos();
+    
 }
 
 function clearInput() {
@@ -93,6 +94,7 @@ function checkNames(response) {
 function displayModal() {
     var name = userObj.name;
     var url = userObj.url;
+    $('.pop-container').css({display: fixed});
     $('.modal-title').text(name);
     
     getDataPhotos();
@@ -151,8 +153,11 @@ function getVideoData() {
         url: 'https://s-apis.learningfuze.com/hackathon/youtube/search.php',
         success: function(response){
             console.log('success response', response);
-            // var videoData = response["video"]["title"][0];
-            // console.log('video data' , videoData);
+            var videoData = response["video"][0].id;
+            console.log('video data' , videoData);
+            $('.video-container').append('<iframe>', {
+                src: 'www.youtube.com/watch?v='+ videoData
+            })
         },
         error: function(response){
             console.log('request error');
@@ -184,12 +189,13 @@ function getWeatherData(userInput){
 
 
 function getDataPhotos() {
+    debugger;
     var theData = {
         api_key: "b5e905e415b7b888752b23f5629b2410",
         method: "flickr.photos.search",
         format: "json",
         nojsoncallback: 1,
-        text: "newport beach",
+        text: userInput,
         privacy_filter: 1,
         per_page: 3,
     }
@@ -203,9 +209,7 @@ function getDataPhotos() {
             console.log(response);
             var photoArray = response.photos.photo;
             console.log(photoArray);
-            debugger;
             for (var pIndex = 0; pIndex < photoArray.length; pIndex++) {
-                debugger;
                 var currentPhoto = photoArray[pIndex];
                 var serverID = currentPhoto.server;
                 var photoID = currentPhoto.id;
