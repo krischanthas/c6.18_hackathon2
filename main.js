@@ -158,6 +158,7 @@ function getVideoData() {
         },
         error: function (response) {
             console.log('request error');
+            
         }
     }
     $.ajax(ajaxConfig);
@@ -202,6 +203,10 @@ function getWeatherData(userInput) {
         },
         error: function () {
             console.log('requestError');
+            if(userInput.includes('Beach')){
+                userInput = userInput.replace('Beach', '');
+                getWeatherData(userInput);
+            }
         }
     }
 
