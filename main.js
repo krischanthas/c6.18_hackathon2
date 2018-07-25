@@ -13,20 +13,22 @@ function initializeApp() {
 function applyClickHandlers() {
     console.log('in applyClickHandlers')
     $('.submitButton').on('click', getUserInput);
-    $('.submitButton, .clearButton').on('click', removeVideo);
+    //$('.submitButton, .clearButton').on('click', );
     $('.clearButton').on('click', clearInput);
 
 }
-function removeVideo(){
-    $('.iframe').addClass('hidden')
-}
+// function removeContent(){
+//     $('.iframe').addClass('hidden');
+//     $('.mainDisplay').empty();
+//     getDataPhotos();
+
+// }
+
 function getUserInput() {
     userInput = $('.inputForm').val();
     console.log(userInput);
     getWeatherData(userInput);
     getData(userInput);
-
-    getDataPhotos();
     displayModal();
 }
 
@@ -101,7 +103,6 @@ function displayModal() {
     $('.popup-container').css("display", "block");
     $('.modal-title').text(name);
     getDataPhotos();
-    displayPictures();
 }
 
 //yelp data
@@ -127,7 +128,6 @@ function getData(userInput) {
         }
     }
     $.ajax(settings);
-    displayPictures();
 }
 function getVideoData() {
     var theData = {
@@ -170,16 +170,32 @@ function displayVideo(response) {
 
 
 function getWeatherData(userInput) {
+    $('.mainDisplay').empty();
     var ajaxConfig = {
         url: 'http://api.openweathermap.org/data/2.5/weather?q=' + userInput + '&units=imperial&APPID=f91cd80c3f28fab67ca696381fb71d30',
         dataType: 'json',
         method: 'get',
         success: function (response) {
             var weather = response.main.temp;
-            console.log(weather);
             var cityName = response.name;
-            $('.mainDisplay').text(`Current weather: ${weather}`);
+            var condition = response.weather[0].main;
+            
+            var symbol;
+            debugger;
+            switch(condition){
+                case 'Haze': symbol= 'fas fa-cloud';
+                break;
+                case 'Clouds': symbol= 'fas fa-cloud';
+                break;
+                case 'Clear': symbol= 'fas fa-sun';
+                break;
+                case 'Rain': symbol= 'fas fa-umbrella';
+                break;
+            }
+            var conditionSymbol = $('<i>').addClass(symbol);
             $('.modal-title').text(cityName);
+            $('.mainDisplay').append(conditionSymbol ,`  ${condition}`);
+            $('.temp').text(`Current temperature: ${weather}°F `)
         },
         error: function () {
             console.log('requestError');
@@ -189,33 +205,6 @@ function getWeatherData(userInput) {
     $.ajax(ajaxConfig);
 }
 
-
-getPlaceID();
-
-function getPlaceID() {
-    var theData = {
-        api_key: "b5e905e415b7b888752b23f5629b2410",
-        method: "flickr.places.findByLatLon",
-        format: "json",
-        nojsoncallback: 1,
-        lat: 33.6189,
-        lon: -117.9298,
-        accuracy: 11,
-    }
-
-    var ajaxOption = {
-        data: theData,
-        dataType: 'json',
-        url: "https://api.flickr.com/services/rest",
-        method: 'GET',
-        success: function (response) {
-            console.log(response);
-        }
-
-    }
-    $.ajax(ajaxOption);
-
-}
 
 function getDataPhotos() {
     var theData = {
