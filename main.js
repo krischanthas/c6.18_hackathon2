@@ -6,6 +6,7 @@ var userObj = {};
 function initializeApp() {
     applyClickHandlers();
     getDataPhotos();
+    
 }
 
 function applyClickHandlers() {
@@ -17,9 +18,9 @@ function applyClickHandlers() {
 }
 
 function getUserInput() {
-    var userInput = $('.inputForm').val();
+     userInput = $('.inputForm').val();
     console.log(userInput);
-    // getWeatherData(userInput);
+    getWeatherData(userInput);
     //getVideoData();
     getData(userInput);
 }
@@ -37,6 +38,7 @@ function clearInput() {
 function displayMap() {
     var lati = 33.634867;
     var long = -117.740499;
+
     var mapProp = {
         center: new google.maps.LatLng(lati, long),
         zoom: 13,
@@ -49,7 +51,6 @@ function displayMap() {
             zoom: 13,
         };
     }
-   debugger;
     var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
     marker = new google.maps.Marker({
         map: map,
@@ -60,7 +61,7 @@ function displayMap() {
             lng: long
         },
     });
-    marker.addListener('click', toggleBounce);
+    // marker.addListener('click', toggleBounce);
     // $(".container").append(map);
 }
 
@@ -79,23 +80,25 @@ function checkNames(response) {
         var indivName = response.businesses[i].name;
         if (indivName === userInput) {
             userObj = response.businesses[i];
-            break;
+            break; 
         }
     }
     displayMap();
 }
 //     getDataPhotos();
+
+
+
+
+function displayModal() {
+    var name = userObj.name;
+    var url = userObj.url;
+    $('.modal-title').text(name);
+    
+    getDataPhotos();
+    displayPictures();
+    //display the name, url, & the pictures onto the modal
 }
-
-
-
-// function displayModal() {
-//     var name = userObj.name;
-//     var url = userObj.url;
-//     getDataPhotos();
-//     displayPictures();
-//     //display the name, url, & the pictures onto the modal
-// }
 
 
 
@@ -136,27 +139,27 @@ function displayPictures() {
     //create divs and append onto the modal
 }
 
-// function getVideoData() {
-//     var theData = {
-//         'q': userInput + ' live stream',
-//         'maxResults': 1,
-//     }
-//     var ajaxConfig = {
-//         data: theData,
-//         dataType: 'json',
-//         method: 'POST',
-//         url: 'https://s-apis.learningfuze.com/hackathon/youtube/search.php',
-//         success: function(response){
-//             console.log('success response', response);
-//             // var videoData = response["video"]["title"][0];
-//             // console.log('video data' , videoData);
-//         },
-//         error: function(response){
-//             console.log('request error');
-//         }
-//     }
-//     $.ajax(ajaxConfig);
-// }
+function getVideoData() {
+    var theData = {
+        'q': userInput + ' live stream',
+        'maxResults': 1,
+    }
+    var ajaxConfig = {
+        data: theData,
+        dataType: 'json',
+        method: 'POST',
+        url: 'https://s-apis.learningfuze.com/hackathon/youtube/search.php',
+        success: function(response){
+            console.log('success response', response);
+            // var videoData = response["video"]["title"][0];
+            // console.log('video data' , videoData);
+        },
+        error: function(response){
+            console.log('request error');
+        }
+    }
+    $.ajax(ajaxConfig);
+}
 
 function getWeatherData(userInput){
     var ajaxConfig = {
@@ -167,7 +170,8 @@ function getWeatherData(userInput){
             var weather = response.main.temp;
             console.log(weather);
             var cityName = response.name;
-        //    $('.mainDisplay').text(`Current weather in ${cityName}: ${weather}`);     
+           $('.mainDisplay').text(`Current weather: ${weather}`); 
+           $('.modal-title').text(cityName);    
         },
         error: function (){
             console.log('requestError');
