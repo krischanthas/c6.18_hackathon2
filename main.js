@@ -16,6 +16,12 @@ function applyClickHandlers() {
     //$('.submitButton, .clearButton').on('click', );
     $('.clearButton').on('click', clearInput);
     $('.liveStreamButton').on('click', getVideoData);
+    $('.videoClose').on('click', function(){
+        $('.videoModal').addClass('hidden');
+    })
+    $('.modal-backdrop').on('click', function(){
+        $('.videoModal').addClass('hidden');
+    })
   
 
 }
@@ -55,6 +61,7 @@ function displayMap() {
     var mapProp = {
         center: new google.maps.LatLng(lati, long),
         zoom: 13,
+        mapTypeControl: false,
     };
     if (userObj.coordinates) {
         lati = userObj.coordinates.latitude;
@@ -62,6 +69,7 @@ function displayMap() {
         mapProp = {
             center: new google.maps.LatLng(lati, long),
             zoom: 13,
+            mapTypeControl: false,
         };
     }
     var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
@@ -159,7 +167,8 @@ function displayVideo(response) {
     console.log('displayVideo success response', response);
     var videoData = response["video"][0].id;
     console.log('www.youtube.com/watch?v=' + videoData);
-    $('.iframe').removeClass('hidden')
+    $('.iframe').removeClass('hidden');
+    $('.videoModal').removeClass('hidden');
     $('.iframe').attr("src", 'https://www.youtube.com/embed/' + videoData + '?autoplay=1').addClass("videoPopUp")
 }
 
