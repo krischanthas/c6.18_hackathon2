@@ -49,7 +49,7 @@ height: 100%;
 }
 .modal-body{
 width: 100%;
-height: 14vh;
+height: 18vh;
 position:absolute;
 z-index: 2;
 }
@@ -88,4 +88,8 @@ height: 40vh;
 }
 .hidden{
 display:none;
+}
+
+.liveStreamButton{
+    z-index: 5;
 }

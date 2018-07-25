@@ -15,6 +15,8 @@ function applyClickHandlers() {
     $('.submitButton').on('click', getUserInput);
     $('.submitButton, .clearButton').on('click', removeVideo);
     $('.clearButton').on('click', clearInput);
+    $('.liveStreamButton').on('click', getVideoData);
+  
 
 }
 function removeVideo(){
@@ -101,7 +103,7 @@ function displayModal() {
     $('.popup-container').css("display", "block");
     $('.modal-title').text(name);
     getDataPhotos();
-    displayPictures();
+  
 }
 
 //yelp data
@@ -127,7 +129,7 @@ function getData(userInput) {
         }
     }
     $.ajax(settings);
-    displayPictures();
+    
 }
 function getVideoData() {
     var theData = {
@@ -144,13 +146,6 @@ function getVideoData() {
             console.log('success response', response);
             var videoData = response["video"][0].id;
             console.log('www.youtube.com/watch?v=' + videoData);
-            $('.modal-body .video-body').append('<iframe>', {
-                attr: {
-                    src: 'https://www.youtube.com/watch?v=' + videoData,
-                    class: 'videoPopUp'
-
-                }
-            })
 
         },
         error: function (response) {
@@ -235,7 +230,7 @@ function getDataPhotos() {
         url: "https://api.flickr.com/services/rest",
         method: 'GET',
         success: function (response) {
-            debugger;
+         
             console.log(response);
             var photoArray = response.photos.photo;
             console.log(photoArray);
