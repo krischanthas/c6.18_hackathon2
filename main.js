@@ -5,7 +5,9 @@ var userObj = {};
 
 function initializeApp() {
     applyClickHandlers();
-    
+
+    getDataPhotos();
+    inputEnter();
     
 }
 
@@ -18,6 +20,7 @@ function applyClickHandlers() {
 
 function getUserInput() {
      userInput = $('.inputForm').val();
+    userInput = $('.inputForm').val();
     console.log(userInput);
     getWeatherData(userInput);
     getVideoData();
@@ -30,15 +33,22 @@ function clearInput() {
     $('.inputForm').val('');
 }
 
-
-
+function inputEnter(){
+    $('input').keydown(function(e) {
+        if (e.keyCode == 13) {
+            $('.submitButton').click();
+        }
+    });
+}
 
 
 
 
 function displayMap() {
+    
     var lati = 33.634867;
     var long = -117.740499;
+
 
     var mapProp = {
         center: new google.maps.LatLng(lati, long),
@@ -62,12 +72,18 @@ function displayMap() {
             lng: long
         },
     });
-    // marker.addListener('click', toggleBounce);
-    // $(".container").append(map);
+    marker.addListener('click', toggleBounce);
 }
 
 
 
+// function toggleBounce() {
+//     if (marker.getAnimation() !== null) {
+//         marker.setAnimation(null);
+//     } else {
+//         marker.setAnimation(google.maps.Animation.BOUNCE);
+//     }
+// }
 // function toggleBounce() {
 //     if (marker.getAnimation() !== null) {
 //         marker.setAnimation(null);
@@ -86,9 +102,6 @@ function checkNames(response) {
     }
     displayMap();
 }
-//     getDataPhotos();
-
-
 
 
 function displayModal() {
