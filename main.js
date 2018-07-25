@@ -34,6 +34,7 @@ function applyClickHandlers() {
 
 function getUserInput() {
     userInput = $('.inputForm').val();
+    userInput = capitalizeFirstLetters();
     console.log(userInput);
     getWeatherData(userInput);
     getData(userInput);
@@ -117,7 +118,6 @@ function displayModal() {
 
 //yelp data
 function getData(userInput) {
-    debugger;
     var settings = {
         "url": "https://yelp.ongandy.com/businesses",
         "method": "POST",
@@ -185,7 +185,6 @@ function getWeatherData(userInput) {
             var condition = response.weather[0].main;
             
             var symbol;
-            debugger;
             switch(condition){
                 case 'Haze': symbol= 'fas fa-cloud';
                 break;
@@ -229,9 +228,9 @@ function getDataPhotos() {
         method: 'GET',
         success: function (response) {
          
-            console.log(response);
+            // console.log(response);
             var photoArray = response.photos.photo;
-            console.log(photoArray);
+            // console.log(photoArray);
             clearCarousel();
             for (var pIndex = 0; pIndex < photoArray.length; pIndex++) {
                 var currentPhoto = photoArray[pIndex];
@@ -251,4 +250,15 @@ function getDataPhotos() {
 
 function clearCarousel() {
     $('.carousel-item').empty();
+}
+
+
+function capitalizeFirstLetters(){
+    var inputVal = $('.inputForm').val();
+    var tempArr = inputVal.split(' ');
+    for(var i = 0; i < tempArr.length; i++){
+        tempArr[i] = tempArr[i].substr(0,1).toUpperCase()+tempArr[i].substr(1);
+    }
+    return tempArr.join(' ');
+    console.log('after capitalizedFirstLetters', tempArr);
 }
