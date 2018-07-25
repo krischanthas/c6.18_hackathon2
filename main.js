@@ -225,8 +225,9 @@ function getDataPhotos() {
         nojsoncallback: 1,
         text: userInput,
         privacy_filter: 1,
-        per_page: 3,
-        tags: "beach, sunset",
+        per_page: 5,
+        tags: "beaches, sunset, shoreline, waves, shore,",
+        
     }
 
     var ajaxOption = {
@@ -262,5 +263,5 @@ function clearCarousel() {
 
 function clearModal(){
     console.log("clicked");
-    $('.popup-container').css("display", "hidden");
+    $('.popup-container').css("display", "none");
 }
