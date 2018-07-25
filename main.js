@@ -16,6 +16,12 @@ function applyClickHandlers() {
     $('.submitButton, .clearButton').on('click', removeVideo);
     $('.clearButton').on('click', clearInput);
     $('.liveStreamButton').on('click', getVideoData);
+    $('.videoClose').on('click', function(){
+        $('.videoModal').addClass('hidden');
+    })
+    $('.modal-backdrop').on('click', function(){
+        $('.videoModal').addClass('hidden');
+    })
   
 
 }
@@ -161,7 +167,8 @@ function displayVideo(response) {
     console.log('displayVideo success response', response);
     var videoData = response["video"][0].id;
     console.log('www.youtube.com/watch?v=' + videoData);
-    $('.iframe').removeClass('hidden')
+    $('.iframe').removeClass('hidden');
+    $('.videoModal').removeClass('hidden');
     $('.iframe').attr("src", 'https://www.youtube.com/embed/' + videoData + '?autoplay=1').addClass("videoPopUp")
 }
 
