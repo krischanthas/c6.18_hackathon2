@@ -107,9 +107,10 @@ function checkNames(response) {
 function displayModal() {
     var name = userObj.name;
     var url = userObj.url;
-    $('.pop-container').css({display: fixed});
+    $('.popup-container').css({display: fixed});
     $('.modal-title').text(name);
     
+
     getDataPhotos();
     displayPictures();
     //display the name, url, & the pictures onto the modal
