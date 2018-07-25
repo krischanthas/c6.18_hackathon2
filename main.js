@@ -156,9 +156,14 @@ function getVideoData() {
             console.log('success response', response);
             var videoData = response["video"][0].id;
             console.log('www.youtube.com/watch?v=' + videoData);
-            $('.video-container').append('<iframe>', {
-                src: 'www.youtube.com/watch?v='+ videoData
+            $('.modal-body.video-body').append('<iframe>', {
+                attr: {
+                    src: 'https://www.youtube.com/watch?v='+videoData,
+                    class: 'videoPopUp'
+
+                }
             })
+            
         },
         error: function(response){
             console.log('request error');
@@ -166,6 +171,7 @@ function getVideoData() {
     }
     $.ajax(ajaxConfig);
 }
+
 
 function getWeatherData(userInput){
     var ajaxConfig = {
@@ -186,7 +192,6 @@ function getWeatherData(userInput){
     
     $.ajax(ajaxConfig);
 }
-
 
 
 function getDataPhotos() {
@@ -232,3 +237,5 @@ function getDataPhotos() {
 function clearCarousel(){
     $('.carousel-item').empty();
 }
+
+
