@@ -19,14 +19,13 @@
 </head>
 
 <body>
-    <div class="headerContainer">
-        <div class="shoreline">
-            <img src="images/shoreline.png">
-        </div>
+    <div class="headerContainer" style="clear: right">
 
         <div class="inputContainer">
 
+
             <h1  id="searchQuery" class="text-center visible-md visible-sm visible-lg">Please Enter Your Beach</h1>
+
 
             <div class="userInputContainer text-center">
 
@@ -36,6 +35,9 @@
 
             </div>
         </div>
+        <div class="shoreline ">
+                <img src="images/shoreline2.png">
+            </div>
     </div>
 
 
@@ -122,20 +124,23 @@
 
         <!-- VideoModal -->
         <div class="videoModal hidden" tabindex="10" role="dialog">
-                <div class="modal-dialog" role="document">
-                  <div class="video-modal-content modal-backdrop">
+            <div class="modal-dialog" role="document">
+                <div class="video-modal-content modal-backdrop">
                    
                       <h5 class="video-title"></h5>
-                      </button>
+                     
                     
                     <div class="modal-body">
                             <div class="videoModal">
+
                                     <iframe class= 'iframe hidden' width="1000" height="650" frameborder="0">
                                     </iframe>
-                    </div>
-                  </div>
+                            </div>
+                    
+                    </div>            
                 </div>
-              </div>
+            </div>
+        </div>
             
 
             <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAxx04KTuHEwWWknXZMZODd4qKggCsXTDE&callback=displayMap"></script>

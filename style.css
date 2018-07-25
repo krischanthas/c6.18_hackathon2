@@ -68,7 +68,7 @@ z-index: 2;
 background-image: url("images/wavesback.gif");
 background-repeat: no-repeat;
 background-size: cover;
-height: 30%
+max-height: 160px;
 
 }
 .mainDisplay{
@@ -84,7 +84,7 @@ line-height: 7.5;
 }
 
 .carousel-item{
-height: 40vh;
+height: 35vh;
 }
 
 
@@ -105,7 +105,7 @@ display:none;
   .video-modal-content {
     box-shadow: none;
     background-color:black;
-    opacity: .87;
+    opacity: .95;
     border: 0;
   }
  
@@ -115,6 +115,26 @@ display:none;
     margin: 0 auto;
   }
 
+
   .close {
       z-index:3;
   }
+
+
+  .shoreline{
+      /* z-index: 2;
+      height: 100%;
+      width: 100%; */
+
+    position: relative;
+    /* right: 0; */
+    display: inline;
+    left: 80%;
+    bottom: 130px;
+
+  }
+/* 
+  .h1header {
+      display:inline;
+  } */
+
