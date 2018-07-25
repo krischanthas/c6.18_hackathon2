@@ -24,7 +24,6 @@ function getUserInput() {
     userInput = $('.inputForm').val();
     console.log(userInput);
     getWeatherData(userInput);
-    //getVideoData();
     getData(userInput);
 
     getDataPhotos();
@@ -42,9 +41,6 @@ function inputEnter() {
         }
     });
 }
-
-
-
 
 function displayMap() {
 
@@ -106,7 +102,6 @@ function displayModal() {
     $('.modal-title').text(name);
     getDataPhotos();
     displayPictures();
-    //display the name, url, & the pictures onto the modal
 }
 
 //yelp data
@@ -131,42 +126,9 @@ function getData(userInput) {
             console.log('getData error: ', err);
         }
     }
-
     $.ajax(settings);
-
-
-
-
-
     displayPictures();
-    //display the name, url, & the pictures onto the modal
 }
-
-function displayPictures() {
-    //create divs and append onto the modal
-}
-
-// function getVideoData() {
-//     var theData = {
-//         'q': userInput + ' live stream',
-//         'maxResults': 1,
-//     }
-//     var ajaxConfig = {
-//         data: theData,
-//         dataType: 'json',
-//         method: 'POST',
-//         url: 'https://s-apis.learningfuze.com/hackathon/youtube/search.php',
-//         success: function(response){
-//             console.log('success response', response);
-//             // var videoData = response["video"]["title"][0];
-//             // console.log('video data' , videoData);
-//         },
-//         error: function(response){
-//             console.log('request error');
-//         }
-//     }
-//     $.ajax(ajaxConfig);
-// }
 function getVideoData() {
     var theData = {
         'q': userInput + ' live stream',
@@ -203,14 +165,7 @@ function displayVideo(response) {
     var videoData = response["video"][0].id;
     console.log('www.youtube.com/watch?v=' + videoData);
     $('.iframe').removeClass('hidden')
-    $('.iframe').attr("src", 'https://www.youtube.com/embed/' + videoData).addClass("videoPopUp")
-    // $('.modal-body .video-body').append('<iframe>', {
-    //     attr: {
-    //         src: 'https://www.youtube.com/watch?v='+videoData,
-    //         class: 'videoPopUp'
-
-    //     }
-    // })
+    $('.iframe').attr("src", 'https://www.youtube.com/embed/' + videoData + '?autoplay=1').addClass("videoPopUp")
 }
 
 
@@ -262,7 +217,6 @@ function getPlaceID() {
 
 }
 
-
 function getDataPhotos() {
     var theData = {
         api_key: "b5e905e415b7b888752b23f5629b2410",
@@ -300,10 +254,6 @@ function getDataPhotos() {
         }
     }
     $.ajax(ajaxOption);
-}
-
-function clearCarousel() {
-    $('.carousel-item').empty();
 }
 
 function clearCarousel() {
