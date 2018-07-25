@@ -17,7 +17,7 @@ function applyClickHandlers() {
 }
 
 function getUserInput() {
-    var userInput = $('.inputForm').val();
+    userInput = $('.inputForm').val();
     console.log(userInput);
     // getWeatherData(userInput);
     //getVideoData();
