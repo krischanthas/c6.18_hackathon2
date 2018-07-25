@@ -6,6 +6,8 @@ var userObj = {};
 function initializeApp() {
     applyClickHandlers();
     getDataPhotos();
+    inputEnter();
+    
 }
 
 function applyClickHandlers() {
@@ -28,8 +30,13 @@ function clearInput() {
     $('.inputForm').val('');
 }
 
-
-
+function inputEnter(){
+    $('input').keydown(function(e) {
+        if (e.keyCode == 13) {
+            $('.submitButton').click();
+        }
+    });
+}
 
 
 
