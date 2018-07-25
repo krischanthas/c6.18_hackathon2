@@ -4,11 +4,10 @@ var userObj = {};
 
 
 function initializeApp() {
+    
     applyClickHandlers();
-
     getDataPhotos();
     inputEnter();
-    
 }
 
 function applyClickHandlers() {
@@ -19,14 +18,12 @@ function applyClickHandlers() {
 }
 
 function getUserInput() {
-     userInput = $('.inputForm').val();
     userInput = $('.inputForm').val();
     console.log(userInput);
     getWeatherData(userInput);
     getVideoData();
     getData(userInput);
     getDataPhotos();
-    
 }
 
 function clearInput() {
@@ -73,28 +70,22 @@ function displayMap() {
         },
     });
     marker.addListener('click', toggleBounce);
+    $(".container").append(map);
 }
 
+function toggleBounce() {
+    if (marker.getAnimation() !== null) {
+        marker.setAnimation(null);
+    } else {
+        marker.setAnimation(google.maps.Animation.BOUNCE);
+    }
+}
 
-
-// function toggleBounce() {
-//     if (marker.getAnimation() !== null) {
-//         marker.setAnimation(null);
-//     } else {
-//         marker.setAnimation(google.maps.Animation.BOUNCE);
-//     }
-// }
-// function toggleBounce() {
-//     if (marker.getAnimation() !== null) {
-//         marker.setAnimation(null);
-//     } else {
-//         marker.setAnimation(google.maps.Animation.BOUNCE);
-//     }
-// }
 
 function checkNames(response) {
     for (var i = 0; i < response.businesses.length; i++) {
         var indivName = response.businesses[i].name;
+        console.log(indivName);
         if (indivName === userInput) {
             userObj = response.businesses[i];
             break; 
@@ -104,13 +95,12 @@ function checkNames(response) {
 }
 
 
+
 function displayModal() {
     var name = userObj.name;
     var url = userObj.url;
     $('.popup-container').css({display: fixed});
     $('.modal-title').text(name);
-    
-
     getDataPhotos();
     displayPictures();
     //display the name, url, & the pictures onto the modal
@@ -118,8 +108,10 @@ function displayModal() {
 
 
 
+
 //yelp data
 function getData(userInput) {
+    debugger;
     var settings = {
         "url": "https://yelp.ongandy.com/businesses",
         "method": "POST",
@@ -131,12 +123,11 @@ function getData(userInput) {
             categories: "beaches",
         },
         success: function (response) {
-            // debugger;
-            console.log('getData success: ', response);
+        
             checkNames(response);
         },
         error: function (err) {
-            // debugger;
+
             console.log('getData error: ', err);
         }
     }
@@ -197,7 +188,31 @@ function getWeatherData(userInput){
         }
     }
     
-    $.ajax(ajaxConfig);
+
+getPlaceID();
+function getPlaceID() {
+    var theData = {
+        api_key: "b5e905e415b7b888752b23f5629b2410",
+        method: "flickr.places.findByLatLon",
+        format: "json",
+        nojsoncallback: 1,
+        lat:33.6189,
+        lon:  -117.9298,
+        accuracy: 11,
+    }
+
+    var ajaxOption = {
+        data: theData,
+        dataType: 'json',
+        url: "https://api.flickr.com/services/rest",
+        method: 'GET',
+        success: function (response) {
+            console.log(response);
+            }
+               
+        }
+    $.ajax(ajaxOption);
+
 }
 
 
@@ -212,6 +227,7 @@ function getDataPhotos() {
         text: userInput,
         privacy_filter: 1,
         per_page: 3,
+        tags: "beach, sunset",
     }
 
     var ajaxOption = {
@@ -220,6 +236,7 @@ function getDataPhotos() {
         url: "https://api.flickr.com/services/rest",
         method: 'GET',
         success: function (response) {
+            debugger;
             console.log(response);
             var photoArray = response.photos.photo;
             console.log(photoArray);
@@ -229,9 +246,7 @@ function getDataPhotos() {
                 var photoID = currentPhoto.id;
                 var secretID = currentPhoto.secret;
                 var url = "https://farm1.staticflickr.com/" + serverID + "/" + photoID + "_" + secretID + ".jpg";
-                console.log(url);
                 var  carouselImage =  $(".carousel-image" + (pIndex + 1));
-                console.log(carouselImage)
                 carouselImage.prepend('<img src="' + url + '" />');
                 carouselImage.children().addClass("d-block w-100");
             }
