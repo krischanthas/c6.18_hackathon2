@@ -53,6 +53,7 @@ function displayMap() {
     var mapProp = {
         center: new google.maps.LatLng(lati, long),
         zoom: 13,
+        mapTypeControl: false,
     };
     if (userObj.coordinates) {
         lati = userObj.coordinates.latitude;
@@ -60,6 +61,7 @@ function displayMap() {
         mapProp = {
             center: new google.maps.LatLng(lati, long),
             zoom: 13,
+            mapTypeControl: false,
         };
     }
     var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
