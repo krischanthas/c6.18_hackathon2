@@ -4,7 +4,7 @@ var userObj = {};
 
 
 function initializeApp() {
-    getDataPhotos();
+    
     applyClickHandlers();
 }
 
@@ -17,11 +17,12 @@ function applyClickHandlers() {
 }
 
 function getUserInput() {
-    var userInput = $('.inputForm').val();
+    userInput = $('.inputForm').val();
     console.log(userInput);
     // getWeatherData(userInput);
     //getVideoData();
     getData(userInput);
+    getDataPhotos();
 }
 
 function clearInput() {
@@ -37,6 +38,8 @@ function clearInput() {
 function displayMap() {
     var lati = 33.634867;
     var long = -117.740499;
+
+
     var mapProp = {
         center: new google.maps.LatLng(lati, long),
         zoom: 13,
@@ -49,7 +52,6 @@ function displayMap() {
             zoom: 13,
         };
     }
-   debugger;
     var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
     marker = new google.maps.Marker({
         map: map,
@@ -75,10 +77,12 @@ function toggleBounce() {
 function checkNames(response) {
     for (var i = 0; i < response.businesses.length; i++) {
         var indivName = response.businesses[i].name;
+        console.log(indivName);
         if (indivName === userInput) {
             userObj = response.businesses[i];
             break;
         }
+
     }
     displayMap();
    
@@ -90,7 +94,7 @@ function checkNames(response) {
 // function displayModal() {
 //     var name = userObj.name;
 //     var url = userObj.url;
-//     getDataPhotos();
+//      Photos();
 //     displayPictures();
 //     //display the name, url, & the pictures onto the modal
 // }
@@ -99,6 +103,7 @@ function checkNames(response) {
 
 //yelp data
 function getData(userInput) {
+    debugger;
     var settings = {
         "url": "https://yelp.ongandy.com/businesses",
         "method": "POST",
@@ -110,12 +115,11 @@ function getData(userInput) {
             categories: "beaches",
         },
         success: function (response) {
-            // debugger;
-            console.log('getData success: ', response);
+        
             checkNames(response);
         },
         error: function (err) {
-            // debugger;
+
             console.log('getData error: ', err);
         }
     }
@@ -174,18 +178,16 @@ function displayPictures() {
     
 //     $.ajax(ajaxConfig);
 // }
-
-
-
-function getDataPhotos() {
+getPlaceID();
+function getPlaceID() {
     var theData = {
         api_key: "b5e905e415b7b888752b23f5629b2410",
-        method: "flickr.photos.search",
+        method: "flickr.places.findByLatLon",
         format: "json",
         nojsoncallback: 1,
-        text: "newport beach",
-        privacy_filter: 1,
-        per_page: 3,
+        lat:33.6189,
+        lon:  -117.9298,
+        accuracy: 11,
     }
 
     var ajaxOption = {
@@ -195,11 +197,38 @@ function getDataPhotos() {
         method: 'GET',
         success: function (response) {
             console.log(response);
+            }
+               
+        }
+    $.ajax(ajaxOption);
+}
+
+
+
+function getDataPhotos() {
+    debugger;
+    var theData = {
+        api_key: "b5e905e415b7b888752b23f5629b2410",
+        method: "flickr.photos.search",
+        format: "json",
+        nojsoncallback: 1,
+        text: userInput,
+        privacy_filter: 1,
+        per_page: 3,
+        tags: "beach, sunset",
+    }
+
+    var ajaxOption = {
+        data: theData,
+        dataType: 'json',
+        url: "https://api.flickr.com/services/rest",
+        method: 'GET',
+        success: function (response) {
+            debugger;
+            console.log(response);
             var photoArray = response.photos.photo;
             console.log(photoArray);
-            debugger;
             for (var pIndex = 0; pIndex < photoArray.length; pIndex++) {
-                debugger;
                 var currentPhoto = photoArray[pIndex];
                 var serverID = currentPhoto.server;
                 var photoID = currentPhoto.id;
