@@ -114,3 +114,7 @@ display:none;
     display: block;
     margin: 0 auto;
   }
+
+  .close {
+      z-index:3;
+  }
