@@ -1,7 +1,12 @@
 $(document).ready(initializeApp);
 var userInput;
 var userObj = {};
+// var imageSearch = new google.search.ImageSearch();
+// imageSearch.setSearchCompleteCallback(this, searchComplete, null);
+// imageSearch.execute("Long Beach");
+// var results = imageSearch.results;
 
+// console.log(results);
 
 function initializeApp() {
 
@@ -23,7 +28,7 @@ function applyClickHandlers() {
         $('.videoModal').addClass('hidden');
         $('.iframe').get(0).stopVideo();
     })
-  
+    $('#closeModal').click(clearModal);
 
 }
 
@@ -107,8 +112,10 @@ function displayModal() {
     var name = userObj.name;
     var url = userObj.url;
     $('.popup-container').css("display", "block");
-    $('.modal-title').text(name);
+    $('.modal-title').text(name); 
+    $('.close').click(clearModal);
     getDataPhotos();
+   
 }
 
 //yelp data
@@ -222,8 +229,9 @@ function getDataPhotos() {
         nojsoncallback: 1,
         text: userInput +' beach view',
         privacy_filter: 1,
-        per_page: 3,
-        tags: "beach, sunset",
+        per_page: 5,
+        tags: "beaches, sunset, shoreline, waves, shore,",
+        
     }
 
     var ajaxOption = {
@@ -257,6 +265,10 @@ function clearCarousel() {
     $('.carousel-item').empty();
 }
 
+function clearModal(){
+    console.log("clicked");
+    $('.popup-container').css("display", "none");
+
 
 function capitalizeFirstLetters(){
     var inputVal = $('.inputForm').val();
@@ -266,4 +278,5 @@ function capitalizeFirstLetters(){
     }
     return tempArr.join(' ');
     console.log('after capitalizedFirstLetters', tempArr);
+
 }
