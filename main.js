@@ -6,21 +6,22 @@ var userObj = {};
 function initializeApp() {
     
     applyClickHandlers();
+    getDataPhotos();
+    inputEnter();
 }
 
 function applyClickHandlers() {
     console.log('in applyClickHandlers')
     $('.submitButton').on('click', getUserInput);
     $('.clearButton').on('click', clearInput);
-    $('.submitButton').on('click', )
 
 }
 
 function getUserInput() {
     userInput = $('.inputForm').val();
     console.log(userInput);
-    // getWeatherData(userInput);
-    //getVideoData();
+    getWeatherData(userInput);
+    getVideoData();
     getData(userInput);
     getDataPhotos();
 }
@@ -29,13 +30,19 @@ function clearInput() {
     $('.inputForm').val('');
 }
 
-
-
+function inputEnter(){
+    $('input').keydown(function(e) {
+        if (e.keyCode == 13) {
+            $('.submitButton').click();
+        }
+    });
+}
 
 
 
 
 function displayMap() {
+    
     var lati = 33.634867;
     var long = -117.740499;
 
@@ -74,30 +81,31 @@ function toggleBounce() {
     }
 }
 
+
 function checkNames(response) {
     for (var i = 0; i < response.businesses.length; i++) {
         var indivName = response.businesses[i].name;
         console.log(indivName);
         if (indivName === userInput) {
             userObj = response.businesses[i];
-            break;
+            break; 
         }
-
     }
     displayMap();
-   
 }
-  
 
 
 
-// function displayModal() {
-//     var name = userObj.name;
-//     var url = userObj.url;
-//      Photos();
-//     displayPictures();
-//     //display the name, url, & the pictures onto the modal
-// }
+function displayModal() {
+    var name = userObj.name;
+    var url = userObj.url;
+    $('.popup-container').css({display: fixed});
+    $('.modal-title').text(name);
+    getDataPhotos();
+    displayPictures();
+    //display the name, url, & the pictures onto the modal
+}
+
 
 
 
@@ -138,46 +146,49 @@ function displayPictures() {
     //create divs and append onto the modal
 }
 
-// function getVideoData() {
-//     var theData = {
-//         'q': userInput + ' live stream',
-//         'maxResults': 1,
-//     }
-//     var ajaxConfig = {
-//         data: theData,
-//         dataType: 'json',
-//         method: 'POST',
-//         url: 'https://s-apis.learningfuze.com/hackathon/youtube/search.php',
-//         success: function(response){
-//             console.log('success response', response);
-//             // var videoData = response["video"]["title"][0];
-//             // console.log('video data' , videoData);
-//         },
-//         error: function(response){
-//             console.log('request error');
-//         }
-//     }
-//     $.ajax(ajaxConfig);
-// }
+function getVideoData() {
+    var theData = {
+        'q': userInput + ' live stream',
+        'maxResults': 1,
+    }
+    var ajaxConfig = {
+        data: theData,
+        dataType: 'json',
+        method: 'POST',
+        url: 'https://s-apis.learningfuze.com/hackathon/youtube/search.php',
+        success: function(response){
+            console.log('success response', response);
+            var videoData = response["video"][0].id;
+            console.log('video data' , videoData);
+            $('.video-container').append('<iframe>', {
+                src: 'www.youtube.com/watch?v='+ videoData
+            })
+        },
+        error: function(response){
+            console.log('request error');
+        }
+    }
+    $.ajax(ajaxConfig);
+}
 
-// function getWeatherData(userInput){
-//     var ajaxConfig = {
-//         url: 'http://api.openweathermap.org/data/2.5/weather?q=' + userInput + '&units=imperial&APPID=f91cd80c3f28fab67ca696381fb71d30',
-//         dataType: 'json',
-//         method: 'get',
-//         success: function(response) {
-//             var weather = response.main.temp;
-//             console.log(weather);
-//             var cityName = response.name;
-//         //    $('.mainDisplay').text(`Current weather in ${cityName}: ${weather}`);     
-//         },
-//         error: function (){
-//             console.log('requestError');
-//         }
-//     }
+function getWeatherData(userInput){
+    var ajaxConfig = {
+        url: 'http://api.openweathermap.org/data/2.5/weather?q=' + userInput + '&units=imperial&APPID=f91cd80c3f28fab67ca696381fb71d30',
+        dataType: 'json',
+        method: 'get',
+        success: function(response) {
+            var weather = response.main.temp;
+            console.log(weather);
+            var cityName = response.name;
+           $('.mainDisplay').text(`Current weather: ${weather}`); 
+           $('.modal-title').text(cityName);    
+        },
+        error: function (){
+            console.log('requestError');
+        }
+    }
     
-//     $.ajax(ajaxConfig);
-// }
+
 getPlaceID();
 function getPlaceID() {
     var theData = {
@@ -201,6 +212,7 @@ function getPlaceID() {
                
         }
     $.ajax(ajaxOption);
+
 }
 
 
