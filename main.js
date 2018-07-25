@@ -90,13 +90,13 @@ function checkNames(response) {
 }
 
 
-// function displayModal() {
-//     var name = userObj.name;
-//     var url = userObj.url;
-//     getDataPhotos();
-//     displayPictures();
-//     //display the name, url, & the pictures onto the modal
-// }
+function displayModal() {
+    var name = userObj.name;
+    var url = userObj.url;
+    getDataPhotos();
+    displayPictures();
+    //display the name, url, & the pictures onto the modal
+}
 
 
 
