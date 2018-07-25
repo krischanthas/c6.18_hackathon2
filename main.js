@@ -268,7 +268,7 @@ function clearCarousel() {
 function clearModal(){
     console.log("clicked");
     $('.popup-container').css("display", "none");
-
+}
 
 function capitalizeFirstLetters(){
     var inputVal = $('.inputForm').val();
