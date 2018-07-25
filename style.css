@@ -16,12 +16,8 @@ body{
     /* right: 100%; */
 }
 
-.inputContainer{
-    /* position: absolute; */
-    /* right: 50%; */
-}
 
-#googleMap {
+#googleMap{
     /* position: absolute; */
     /* left: 50%; */
     height: 400px;
@@ -42,6 +38,8 @@ body{
 
 
 
+
+    display: none;
 }
 .modal-body{
     width: 100%;
