@@ -25,12 +25,6 @@ function applyClickHandlers() {
   
 
 }
-// function removeContent(){
-//     $('.iframe').addClass('hidden');
-//     $('.mainDisplay').empty();
-//     getDataPhotos();
-
-// }
 
 function getUserInput() {
     userInput = $('.inputForm').val();
@@ -144,12 +138,14 @@ function getVideoData() {
         'q': userInput + ' live stream',
         'maxResults': 1,
     }
+
     var ajaxConfig = {
         data: theData,
         dataType: 'json',
         method: 'POST',
         url: 'https://s-apis.learningfuze.com/hackathon/youtube/search.php',
         success: function (response) {
+        debugger;
             displayVideo(response);
             console.log('success response', response);
             var videoData = response["video"][0].id;
@@ -167,11 +163,16 @@ function getVideoData() {
 function displayVideo(response) {
     console.log('displayVideo success response', response);
     var videoData = response["video"][0].id;
+    if((response.video[0].title).indexOf(userInput) === -1){
+        alert('Video not available');
+    }else{
+        $('.iframe').removeClass('hidden');
+        $('.videoModal').removeClass('hidden');
+        $('.iframe').attr("src", 'https://www.youtube.com/embed/' + videoData + '?autoplay=1').addClass("videoPopUp")
+    
+    }
     console.log('www.youtube.com/watch?v=' + videoData);
-    $('.iframe').removeClass('hidden');
-    $('.videoModal').removeClass('hidden');
-    $('.iframe').attr("src", 'https://www.youtube.com/embed/' + videoData + '?autoplay=1').addClass("videoPopUp")
-}
+    }
 
 
 function getWeatherData(userInput) {
@@ -184,7 +185,6 @@ function getWeatherData(userInput) {
             var weather = response.main.temp;
             var cityName = response.name;
             var condition = response.weather[0].main;
-            
             var symbol;
             switch(condition){
                 case 'Haze': symbol= 'fas fa-cloud';
@@ -209,7 +209,6 @@ function getWeatherData(userInput) {
             }
         }
     }
-
     $.ajax(ajaxConfig);
 }
 
