@@ -219,7 +219,7 @@ function getDataPhotos() {
         method: "flickr.photos.search",
         format: "json",
         nojsoncallback: 1,
-        text: userInput,
+        text: userInput +' beach view',
         privacy_filter: 1,
         per_page: 3,
         tags: "beach, sunset",
