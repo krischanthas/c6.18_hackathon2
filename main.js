@@ -21,6 +21,7 @@ function applyClickHandlers() {
     })
     $('.modal-backdrop').on('click', function(){
         $('.videoModal').addClass('hidden');
+        $('.iframe').get(0).stopVideo();
     })
   
 
