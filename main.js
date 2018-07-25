@@ -61,7 +61,6 @@ function displayMap() {
 }
 
 function displayVideo(url) {
-    if()
 }
 
 // function toggleBounce() {
