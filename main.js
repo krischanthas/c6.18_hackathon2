@@ -25,15 +25,10 @@ function applyClickHandlers() {
   
 
 }
-// function removeContent(){
-//     $('.iframe').addClass('hidden');
-//     $('.mainDisplay').empty();
-//     getDataPhotos();
-
-// }
 
 function getUserInput() {
     userInput = $('.inputForm').val();
+    userInput = capitalizeFirstLetters();
     console.log(userInput);
     getWeatherData(userInput);
     getData(userInput);
@@ -117,7 +112,6 @@ function displayModal() {
 
 //yelp data
 function getData(userInput) {
-    debugger;
     var settings = {
         "url": "https://yelp.ongandy.com/businesses",
         "method": "POST",
@@ -144,12 +138,14 @@ function getVideoData() {
         'q': userInput + ' live stream',
         'maxResults': 1,
     }
+
     var ajaxConfig = {
         data: theData,
         dataType: 'json',
         method: 'POST',
         url: 'https://s-apis.learningfuze.com/hackathon/youtube/search.php',
         success: function (response) {
+        debugger;
             displayVideo(response);
             console.log('success response', response);
             var videoData = response["video"][0].id;
@@ -158,6 +154,7 @@ function getVideoData() {
         },
         error: function (response) {
             console.log('request error');
+            
         }
     }
     $.ajax(ajaxConfig);
@@ -166,11 +163,16 @@ function getVideoData() {
 function displayVideo(response) {
     console.log('displayVideo success response', response);
     var videoData = response["video"][0].id;
+    if((response.video[0].title).indexOf(userInput) === -1){
+        alert('Video not available');
+    }else{
+        $('.iframe').removeClass('hidden');
+        $('.videoModal').removeClass('hidden');
+        $('.iframe').attr("src", 'https://www.youtube.com/embed/' + videoData + '?autoplay=1').addClass("videoPopUp")
+    
+    }
     console.log('www.youtube.com/watch?v=' + videoData);
-    $('.iframe').removeClass('hidden');
-    $('.videoModal').removeClass('hidden');
-    $('.iframe').attr("src", 'https://www.youtube.com/embed/' + videoData + '?autoplay=1').addClass("videoPopUp")
-}
+    }
 
 
 function getWeatherData(userInput) {
@@ -183,9 +185,7 @@ function getWeatherData(userInput) {
             var weather = response.main.temp;
             var cityName = response.name;
             var condition = response.weather[0].main;
-            
             var symbol;
-            debugger;
             switch(condition){
                 case 'Haze': symbol= 'fas fa-cloud';
                 break;
@@ -203,9 +203,12 @@ function getWeatherData(userInput) {
         },
         error: function () {
             console.log('requestError');
+            if(userInput.includes('Beach')){
+                userInput = userInput.replace('Beach', '');
+                getWeatherData(userInput);
+            }
         }
     }
-
     $.ajax(ajaxConfig);
 }
 
@@ -229,9 +232,9 @@ function getDataPhotos() {
         method: 'GET',
         success: function (response) {
          
-            console.log(response);
+            // console.log(response);
             var photoArray = response.photos.photo;
-            console.log(photoArray);
+            // console.log(photoArray);
             clearCarousel();
             for (var pIndex = 0; pIndex < photoArray.length; pIndex++) {
                 var currentPhoto = photoArray[pIndex];
@@ -251,4 +254,15 @@ function getDataPhotos() {
 
 function clearCarousel() {
     $('.carousel-item').empty();
+}
+
+
+function capitalizeFirstLetters(){
+    var inputVal = $('.inputForm').val();
+    var tempArr = inputVal.split(' ');
+    for(var i = 0; i < tempArr.length; i++){
+        tempArr[i] = tempArr[i].substr(0,1).toUpperCase()+tempArr[i].substr(1);
+    }
+    return tempArr.join(' ');
+    console.log('after capitalizedFirstLetters', tempArr);
 }
