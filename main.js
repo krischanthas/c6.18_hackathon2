@@ -21,8 +21,10 @@ function getUserInput() {
     userInput = $('.inputForm').val();
     console.log(userInput);
     getWeatherData(userInput);
-    getVideoData();
+    //getVideoData();
     getData(userInput);
+
+    getVideoData();
     getDataPhotos();
     displayModal();
 }
@@ -101,7 +103,6 @@ function displayModal() {
     var name = userObj.name;
     var url = userObj.url;
     $('.popup-container').css("display", "block");
-
     $('.modal-title').text(name);
     getDataPhotos();
     displayPictures();
@@ -148,6 +149,27 @@ function displayPictures() {
     //create divs and append onto the modal
 }
 
+// function getVideoData() {
+//     var theData = {
+//         'q': userInput + ' live stream',
+//         'maxResults': 1,
+//     }
+//     var ajaxConfig = {
+//         data: theData,
+//         dataType: 'json',
+//         method: 'POST',
+//         url: 'https://s-apis.learningfuze.com/hackathon/youtube/search.php',
+//         success: function(response){
+//             console.log('success response', response);
+//             // var videoData = response["video"]["title"][0];
+//             // console.log('video data' , videoData);
+//         },
+//         error: function(response){
+//             console.log('request error');
+//         }
+//     }
+//     $.ajax(ajaxConfig);
+// }
 function getVideoData() {
     var theData = {
         'q': userInput + ' live stream',
@@ -196,6 +218,9 @@ function getWeatherData(userInput){
         }
     }
     
+    $.ajax(ajaxConfig);
+}
+
 
 getPlaceID();
 function getPlaceID() {
@@ -263,6 +288,9 @@ function getDataPhotos() {
     $.ajax(ajaxOption);
 }
 
+function clearCarousel(){
+    $('.carousel-item').empty();
+}
 
 function clearCarousel(){
     $('.carousel-item').empty();
