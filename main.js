@@ -23,6 +23,7 @@ function getUserInput() {
     getVideoData();
     getData(userInput);
     getDataPhotos();
+    displayModal();
     
 }
 
@@ -94,7 +95,7 @@ function checkNames(response) {
 function displayModal() {
     var name = userObj.name;
     var url = userObj.url;
-    $('.pop-container').css({display: fixed});
+    $('.popup-container').css("display", "block");
     $('.modal-title').text(name);
     
     getDataPhotos();
@@ -154,7 +155,7 @@ function getVideoData() {
         success: function(response){
             console.log('success response', response);
             var videoData = response["video"][0].id;
-            console.log('video data' , videoData);
+            console.log('www.youtube.com/watch?v=' + videoData);
             $('.video-container').append('<iframe>', {
                 src: 'www.youtube.com/watch?v='+ videoData
             })
@@ -189,7 +190,6 @@ function getWeatherData(userInput){
 
 
 function getDataPhotos() {
-    debugger;
     var theData = {
         api_key: "b5e905e415b7b888752b23f5629b2410",
         method: "flickr.photos.search",
@@ -209,6 +209,7 @@ function getDataPhotos() {
             console.log(response);
             var photoArray = response.photos.photo;
             console.log(photoArray);
+            clearCarousel();
             for (var pIndex = 0; pIndex < photoArray.length; pIndex++) {
                 var currentPhoto = photoArray[pIndex];
                 var serverID = currentPhoto.server;
@@ -228,3 +229,6 @@ function getDataPhotos() {
 }
 
 
+function clearCarousel(){
+    $('.carousel-item').empty();
+}
