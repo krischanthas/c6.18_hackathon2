@@ -5,7 +5,7 @@ var userObj = {};
 
 function initializeApp() {
     applyClickHandlers();
-    getDataPhotos();
+
 }
 
 function applyClickHandlers() {
@@ -13,11 +13,11 @@ function applyClickHandlers() {
     $('.submitButton').on('click', getUserInput);
     $('.clearButton').on('click', clearInput);
     $('.submitButton').on('click', )
-
+    $('.')
 }
 
 function getUserInput() {
-    var userInput = $('.inputForm').val();
+    userInput = $('.inputForm').val();
     console.log(userInput);
     // getWeatherData(userInput);
     //getVideoData();
@@ -28,16 +28,10 @@ function clearInput() {
     $('.inputForm').val('');
 }
 
-
-
-
-
-
-
 function displayMap() {
     var lati = 33.634867;
     var long = -117.740499;
-    debugger;
+
 
     var mapProp = {
         center: new google.maps.LatLng(lati, long),
@@ -61,8 +55,13 @@ function displayMap() {
             lng: long
         },
     });
-    // marker.addListener('click', toggleBounce);
+    google.maps.event.addListener(marker, 'click', getVideoData);
+
     // $(".container").append(map);
+}
+
+function displayVideo(url) {
+    
 }
 
 // function toggleBounce() {
@@ -83,20 +82,16 @@ function checkNames(response) {
 
     }
     displayMap();
-
 }
 //     getDataPhotos();
 
 
 
 
-// function displayModal() {
-//     var name = userObj.name;
-//     var url = userObj.url;
-//     getDataPhotos();
-//     displayPictures();
-//     //display the name, url, & the pictures onto the modal
-// }
+function displayModal() {
+
+
+}
 
 
 
@@ -122,14 +117,10 @@ function getData(userInput) {
             console.log('getData error: ', err);
         }
     }
-    
+
     $.ajax(settings);
-    
 
-
-    
-
-    displayPictures();
+    //checkNames();
     //display the name, url, & the pictures onto the modal
 }
 
@@ -137,27 +128,31 @@ function displayPictures() {
     //create divs and append onto the modal
 }
 
-// function getVideoData() {
-//     var theData = {
-//         'q': userInput + ' live stream',
-//         'maxResults': 1,
-//     }
-//     var ajaxConfig = {
-//         data: theData,
-//         dataType: 'json',
-//         method: 'POST',
-//         url: 'https://s-apis.learningfuze.com/hackathon/youtube/search.php',
-//         success: function(response){
-//             console.log('success response', response);
-//             // var videoData = response["video"]["title"][0];
-//             // console.log('video data' , videoData);
-//         },
-//         error: function(response){
-//             console.log('request error');
-//         }
-//     }
-//     $.ajax(ajaxConfig);
-// }
+function getVideoData() {
+    var theData = {
+        'q': userInput + ' live stream',
+        'maxResults': 1,
+    }
+    var ajaxConfig = {
+        data: theData,
+        dataType: 'json',
+        method: 'POST',
+        url: 'https://s-apis.learningfuze.com/hackathon/youtube/search.php',
+        success: function (response) {
+            var videoData = response["video"][0].id;
+            console.log('www.youtube.com/watch?v=' + videoData);
+            $('.video-container').append('<iframe>', {
+                src: 'www.youtube.com/watch?v='+ videoData
+            })
+
+            displayVideo(videoData);
+        },
+        error: function (response) {
+            console.log('request error');
+        }
+    }
+    $.ajax(ajaxConfig);
+}
 
 // function getWeatherData(userInput){
 //     var ajaxConfig = {
@@ -174,7 +169,7 @@ function displayPictures() {
 //             console.log('requestError');
 //         }
 //     }
-    
+
 //     $.ajax(ajaxConfig);
 // }
 
@@ -200,24 +195,22 @@ function getDataPhotos() {
             console.log(response);
             var photoArray = response.photos.photo;
             console.log(photoArray);
-            debugger;
+
             for (var pIndex = 0; pIndex < photoArray.length; pIndex++) {
-                debugger;
+
                 var currentPhoto = photoArray[pIndex];
                 var serverID = currentPhoto.server;
                 var photoID = currentPhoto.id;
                 var secretID = currentPhoto.secret;
                 var url = "https://farm1.staticflickr.com/" + serverID + "/" + photoID + "_" + secretID + ".jpg";
                 console.log(url);
-                var  carouselImage =  $(".carousel-image" + (pIndex + 1));
+                var carouselImage = $(".carousel-image" + (pIndex + 1));
                 console.log(carouselImage)
                 carouselImage.prepend('<img src="' + url + '" />');
                 carouselImage.children().addClass("d-block w-100");
             }
-               
+
         }
     }
     $.ajax(ajaxOption);
 }
-
-
