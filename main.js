@@ -24,6 +24,7 @@ function getUserInput() {
     getVideoData();
     getData(userInput);
     getDataPhotos();
+    displayModal();
 }
 
 function clearInput() {
@@ -99,7 +100,8 @@ function checkNames(response) {
 function displayModal() {
     var name = userObj.name;
     var url = userObj.url;
-    $('.popup-container').css({display: fixed});
+    $('.popup-container').css("display", "block");
+
     $('.modal-title').text(name);
     getDataPhotos();
     displayPictures();
@@ -159,10 +161,15 @@ function getVideoData() {
         success: function(response){
             console.log('success response', response);
             var videoData = response["video"][0].id;
-            console.log('video data' , videoData);
-            $('.video-container').append('<iframe>', {
-                src: 'www.youtube.com/watch?v='+ videoData
+            console.log('www.youtube.com/watch?v=' + videoData);
+            $('.modal-body.video-body').append('<iframe>', {
+                attr: {
+                    src: 'https://www.youtube.com/watch?v='+videoData,
+                    class: 'videoPopUp'
+
+                }
             })
+            
         },
         error: function(response){
             console.log('request error');
@@ -170,6 +177,7 @@ function getVideoData() {
     }
     $.ajax(ajaxConfig);
 }
+
 
 function getWeatherData(userInput){
     var ajaxConfig = {
@@ -216,9 +224,7 @@ function getPlaceID() {
 }
 
 
-
 function getDataPhotos() {
-    debugger;
     var theData = {
         api_key: "b5e905e415b7b888752b23f5629b2410",
         method: "flickr.photos.search",
@@ -240,6 +246,7 @@ function getDataPhotos() {
             console.log(response);
             var photoArray = response.photos.photo;
             console.log(photoArray);
+            clearCarousel();
             for (var pIndex = 0; pIndex < photoArray.length; pIndex++) {
                 var currentPhoto = photoArray[pIndex];
                 var serverID = currentPhoto.server;
@@ -254,6 +261,11 @@ function getDataPhotos() {
         }
     }
     $.ajax(ajaxOption);
+}
+
+
+function clearCarousel(){
+    $('.carousel-item').empty();
 }
 
 
