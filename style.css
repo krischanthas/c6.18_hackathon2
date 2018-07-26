@@ -1,3 +1,15 @@
+@font-face {
+    font-family: beachFont;
+    src: url("font/TropicalAsianDEMO-Regular.ttf");
+    
+}
+
+#searchQuery {
+    font-family: beachFont;
+    font-size: 10vh;
+    text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+}
+
 .backButton {
     text-shadow: 1px 1px 1px #ccc;
     font-size: 2.5em;
@@ -23,7 +35,6 @@ width: 100%;
 
 #googleMap {
 /* position: absolute; */
-/* left: 50%; */
 height: 600px;
 width: 100%;
 }
@@ -94,7 +105,7 @@ display:none;
   .video-modal-content {
     box-shadow: none;
     background-color:black;
-    opacity: .87;
+    opacity: .97;
     border: 0;
   }
  
@@ -121,3 +132,6 @@ display:none;
   .h1header {
       display:inline;
   } */
+.close {
+    z-index: 3;
+}

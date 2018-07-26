@@ -1,7 +1,12 @@
 $(document).ready(initializeApp);
 var userInput;
 var userObj = {};
+// var imageSearch = new google.search.ImageSearch();
+// imageSearch.setSearchCompleteCallback(this, searchComplete, null);
+// imageSearch.execute("Long Beach");
+// var results = imageSearch.results;
 
+// console.log(results);
 
 function initializeApp() {
 
@@ -22,7 +27,8 @@ function applyClickHandlers() {
     $('.modal-backdrop').on('click', function(){
         $('.videoModal').addClass('hidden');
     })
-  
+    $('#closeModal').click(clearModal);
+    $('.submitButton').on('click', clearPage);
 
 }
 
@@ -30,8 +36,8 @@ function getUserInput() {
     userInput = $('.inputForm').val();
     userInput = capitalizeFirstLetters();
     console.log(userInput);
-    getWeatherData(userInput);
-    getData(userInput);
+    getData();
+    
     displayModal();
 }
 
@@ -48,7 +54,7 @@ function inputEnter() {
 }
 
 function displayMap() {
-
+debugger;
     var lati = 33.634867;
     var long = -117.740499;
 
@@ -91,14 +97,8 @@ function toggleBounce() {
 }
 
 function checkNames(response) {
-    for (var i = 0; i < response.businesses.length; i++) {
-        var indivName = response.businesses[i].name;
-        console.log(indivName);
-        if (indivName === userInput) {
-            userObj = response.businesses[i];
-            break;
-        }
-    }
+            userObj = response.businesses[0];
+        
     displayMap();
 }
 
@@ -106,25 +106,29 @@ function displayModal() {
     var name = userObj.name;
     var url = userObj.url;
     $('.popup-container').css("display", "block");
-    $('.modal-title').text(name);
+    $('.modal-title').text(name); 
+    $('.close').click(clearModal);
     getDataPhotos();
+   
 }
 
 //yelp data
-function getData(userInput) {
+function getData() {
+    debugger;
     var settings = {
         "url": "https://yelp.ongandy.com/businesses",
         "method": "POST",
         "dataType": "JSON",
         "data": {
-            term: userInput,
+            term: userInput + " beach",
             location: "Orange County",
             api_key: "w5ThXNvXEMnLlZYTNrvrh7Mf0ZGQNFhcP6K-LPzktl8NBZcE1_DC7X4f6ZXWb62mV8HsZkDX2Zc4p86LtU0Is9kI0Y0Ug0GvwC7FvumSylmNLfLpeikscQZw41pXW3Yx",
             categories: "beaches",
         },
         success: function (response) {
-
+            console.log(response);
             checkNames(response);
+            getWeatherData(userInput);
         },
         error: function (err) {
 
@@ -135,7 +139,7 @@ function getData(userInput) {
 }
 function getVideoData() {
     var theData = {
-        'q': userInput + ' live stream',
+        'q': userInput + ' beach live stream' ,
         'maxResults': 1,
     }
 
@@ -145,10 +149,9 @@ function getVideoData() {
         method: 'POST',
         url: 'https://s-apis.learningfuze.com/hackathon/youtube/search.php',
         success: function (response) {
-        debugger;
             displayVideo(response);
             console.log('success response', response);
-            var videoData = response["video"][0].id;
+            var videoData = response["video"][0].id;    
             console.log('www.youtube.com/watch?v=' + videoData);
 
         },
@@ -176,14 +179,15 @@ function displayVideo(response) {
 
 
 function getWeatherData(userInput) {
+    debugger;
     $('.mainDisplay').empty();
+    var cityName = userObj.location.city;
     var ajaxConfig = {
-        url: 'http://api.openweathermap.org/data/2.5/weather?q=' + userInput + '&units=imperial&APPID=f91cd80c3f28fab67ca696381fb71d30',
+        url: 'http://api.openweathermap.org/data/2.5/weather?q=' + cityName + '&units=imperial&APPID=f91cd80c3f28fab67ca696381fb71d30',
         dataType: 'json',
         method: 'get',
         success: function (response) {
             var weather = response.main.temp;
-            var cityName = response.name;
             var condition = response.weather[0].main;
             var symbol;
             switch(condition){
@@ -197,7 +201,7 @@ function getWeatherData(userInput) {
                 break;
             }
             var conditionSymbol = $('<i>').addClass(symbol);
-            $('.modal-title').text(cityName);
+            $('.modal-title').text(userInput);
             $('.mainDisplay').append(conditionSymbol ,`  ${condition}`);
             $('.temp').text(`Current temperature: ${weather}°F `)
         },
@@ -221,8 +225,9 @@ function getDataPhotos() {
         nojsoncallback: 1,
         text: userInput +' beach view',
         privacy_filter: 1,
-        per_page: 3,
-        tags: "beach, sunset",
+        per_page: 5,
+        tags: "beaches, sunset, shoreline, waves, shore,",
+        
     }
 
     var ajaxOption = {
@@ -256,6 +261,10 @@ function clearCarousel() {
     $('.carousel-item').empty();
 }
 
+function clearModal(){
+    console.log("clicked");
+    $('.popup-container').css("display", "none");
+}
 
 function capitalizeFirstLetters(){
     var inputVal = $('.inputForm').val();
@@ -265,4 +274,9 @@ function capitalizeFirstLetters(){
     }
     return tempArr.join(' ');
     console.log('after capitalizedFirstLetters', tempArr);
+
 }
+function clearPage(){
+    userObj = {};
+    userInput;
+ }
