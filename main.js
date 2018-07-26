@@ -37,7 +37,7 @@ function applyClickHandlers() {
     })
     $('.modal-backdrop').on('click', function(){
         $('.videoModal').addClass('hidden');
-        $('.iframe').get(0).stopVideo();
+        // $('.iframe').get(0).stopVideo();
     })
     $('#closeModal').click(clearModal);
 }
@@ -220,6 +220,7 @@ function displayVideo(response) {
         $('.iframe').attr("src", 'https://www.youtube.com/embed/' + videoData + '?autoplay=1').addClass("videoPopUp")
     
     }
+
  }
 /************************************
  * getWeatherData
@@ -333,4 +334,5 @@ function capitalizeFirstLetters(){
         tempArr[i] = tempArr[i].substr(0,1).toUpperCase()+tempArr[i].substr(1);
     }
     return tempArr.join(' ');
+
 }
