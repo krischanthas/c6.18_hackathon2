@@ -26,7 +26,7 @@ function applyClickHandlers() {
     })
     $('.modal-backdrop').on('click', function(){
         $('.videoModal').addClass('hidden');
-        $('.iframe').get(0).stopVideo();
+        // $('.iframe').get(0).stopVideo();
     })
     $('#closeModal').click(clearModal);
 }
@@ -53,7 +53,6 @@ function inputEnter() {
 }
 
 function displayMap() {
-debugger;
     var lati = 33.634867;
     var long = -117.740499;
 
@@ -113,7 +112,6 @@ function displayModal() {
 
 //yelp data
 function getData() {
-    debugger;
     var settings = {
         "url": "https://yelp.ongandy.com/businesses",
         "method": "POST",
@@ -178,7 +176,6 @@ function displayVideo(response) {
 
 
 function getWeatherData(userInput) {
-    debugger;
     $('.mainDisplay').empty();
     var cityName = userObj.location.city;
     var ajaxConfig = {
@@ -273,7 +270,8 @@ function capitalizeFirstLetters(){
     }
     return tempArr.join(' ');
     console.log('after capitalizedFirstLetters', tempArr);
+}
 function clearPage(){
     userObj = {};
     userInput;
-
+}
