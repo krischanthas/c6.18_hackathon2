@@ -1,20 +1,31 @@
+/************************************
+ * Listen for the doucment to load and initialize the application
+ */
 $(document).ready(initializeApp);
+/************************************
+ * Define all global variables here
+ */
 var userInput;
 var userObj = {};
-// var imageSearch = new google.search.ImageSearch();
-// imageSearch.setSearchCompleteCallback(this, searchComplete, null);
-// imageSearch.execute("Long Beach");
-// var results = imageSearch.results;
 
-// console.log(results);
-
+/************************************
+ * InitializeApp 
+ * @params {undefined} none
+ * @returns: {undefined} none
+ * @calls: applyClickHandlers, getDataPhotos, inputEnter
+ * Initializes the application including adding the handlers and pulling in any data from the server
+ */
 function initializeApp() {
-
     applyClickHandlers();
     getDataPhotos();
     inputEnter();
 }
-
+/************************************
+ * applyClickHandlers
+ * @params {undefined} none
+ * @returns: {undefined} none
+ * Applies clicks on element to call certain functions whenclicked
+ */
 function applyClickHandlers() {
     console.log('in applyClickHandlers')
     $('.submitButton').on('click', getUserInput);
@@ -31,20 +42,34 @@ function applyClickHandlers() {
     $('.submitButton').on('click', clearPage);
 
 }
-
+/************************************
+ * getUserInput
+ * @params {undefined} none
+ * @returns: {undefined} none
+ * @calls: getData displayModal
+ * Stores the user input and uses it to getData and run the modal while capitalizing the first letters of the input 
+ */
 function getUserInput() {
     userInput = $('.inputForm').val();
     userInput = capitalizeFirstLetters();
-    console.log(userInput);
     getData();
-    
     displayModal();
 }
-
+/************************************
+ * clearInput
+ * @params {undefined} none
+ * @returns: {undefined} none
+ * Clears the input value if user makes a mistake
+ */
 function clearInput() {
     $('.inputForm').val('');
 }
-
+/************************************
+ * inputEnters
+ * @params {undefined} none
+ * @returns: {undefined} none
+ * allows to hit enter to submit values
+ */
 function inputEnter() {
     $('input').keydown(function (e) {
         if (e.keyCode == 13) {
@@ -52,13 +77,15 @@ function inputEnter() {
         }
     });
 }
-
+/************************************
+ * displayMap
+ * @params {undefined} none
+ * @returns: {undefined} none.
+ * Displays the map on load and the marker of location
+ */
 function displayMap() {
-debugger;
     var lati = 33.634867;
     var long = -117.740499;
-
-
     var mapProp = {
         center: new google.maps.LatLng(lati, long),
         zoom: 13,
@@ -87,7 +114,12 @@ debugger;
     marker.addListener('click', toggleBounce);
     $(".container").append(map);
 }
-
+/************************************
+ * toggleBounce
+ * @params {undefined} none
+ * @returns: {undefined} none
+ * adds animation to the google map marker
+ */
 function toggleBounce() {
     if (marker.getAnimation() !== null) {
         marker.setAnimation(null);
@@ -95,26 +127,40 @@ function toggleBounce() {
         marker.setAnimation(google.maps.Animation.BOUNCE);
     }
 }
-
+/************************************
+ * checkNames
+ * @params {undefined} none
+ * @returns: {undefined} none
+ * @calls displayMap
+ * Stores the result from Yelp data based on what the user inputs into userObj and runs the coordinate into display maps 
+ */
 function checkNames(response) {
             userObj = response.businesses[0];
-        
     displayMap();
 }
-
+/************************************
+ * displayModal
+ * @params {undefined} none
+ * @returns: {undefined} none
+ * @calls getDataPhotos
+ * Shows the modal and displays the name for the input the user placed. Also holds the carousel photo gallery
+ */
 function displayModal() {
     var name = userObj.name;
-    var url = userObj.url;
     $('.popup-container').css("display", "block");
     $('.modal-title').text(name); 
     $('.close').click(clearModal);
     getDataPhotos();
    
 }
-
-//yelp data
+/************************************
+ * getData
+ * @params {undefined} none
+ * @returns: {undefined} none
+ * @calls checkNames, getWeatherData
+ * getData calls the yelp api to get coordinates to display on the map based off the user input 
+ */
 function getData() {
-    debugger;
     var settings = {
         "url": "https://yelp.ongandy.com/businesses",
         "method": "POST",
@@ -126,23 +172,26 @@ function getData() {
             categories: "beaches",
         },
         success: function (response) {
-            console.log(response);
             checkNames(response);
             getWeatherData(userInput);
         },
         error: function (err) {
-
-            console.log('getData error: ', err);
         }
     }
     $.ajax(settings);
 }
+/************************************
+ * getVideoData
+ * @params {undefined} none
+ * @returns: {undefined} none
+ * @calls displayVideo
+ * When this function gets called it pulls up link for a single video based on user input
+ */ 
 function getVideoData() {
     var theData = {
         'q': userInput + ' beach live stream' ,
         'maxResults': 1,
     }
-
     var ajaxConfig = {
         data: theData,
         dataType: 'json',
@@ -150,21 +199,19 @@ function getVideoData() {
         url: 'https://s-apis.learningfuze.com/hackathon/youtube/search.php',
         success: function (response) {
             displayVideo(response);
-            console.log('success response', response);
-            var videoData = response["video"][0].id;    
-            console.log('www.youtube.com/watch?v=' + videoData);
-
         },
         error: function (response) {
-            console.log('request error');
-            
         }
     }
     $.ajax(ajaxConfig);
 }
-
+/************************************
+ * displayVideo
+ * @params {undefined} none
+ * @returns: {undefined} none
+ * Brings up a modal and displays the video link in the modal
+ */
 function displayVideo(response) {
-    console.log('displayVideo success response', response);
     var videoData = response["video"][0].id;
     if((response.video[0].title).indexOf(userInput) === -1){
         alert('Video not available');
@@ -174,12 +221,14 @@ function displayVideo(response) {
         $('.iframe').attr("src", 'https://www.youtube.com/embed/' + videoData + '?autoplay=1').addClass("videoPopUp")
     
     }
-    console.log('www.youtube.com/watch?v=' + videoData);
-    }
-
-
-function getWeatherData(userInput) {
-    debugger;
+ }
+/************************************
+ * getWeatherData
+ * @params {undefined} none
+ * @returns: {undefined} none
+ * Gets weather data from API and appends type of weather based on data received as well as showing temperature
+ */
+function getWeatherData() {
     $('.mainDisplay').empty();
     var cityName = userObj.location.city;
     var ajaxConfig = {
@@ -206,7 +255,6 @@ function getWeatherData(userInput) {
             $('.temp').text(`Current temperature: ${weather}°F `)
         },
         error: function () {
-            console.log('requestError');
             if(userInput.includes('Beach')){
                 userInput = userInput.replace('Beach', '');
                 getWeatherData(userInput);
@@ -215,8 +263,13 @@ function getWeatherData(userInput) {
     }
     $.ajax(ajaxConfig);
 }
-
-
+/************************************
+ * getDataPhotos
+ * @params {undefined} none
+ * @returns: {undefined} none
+ * @calls clearCarousel
+ * Gets the photos from Flickr API and appends them to a gallery on the modal
+ */
 function getDataPhotos() {
     var theData = {
         api_key: "b5e905e415b7b888752b23f5629b2410",
@@ -227,19 +280,14 @@ function getDataPhotos() {
         privacy_filter: 1,
         per_page: 5,
         tags: "beaches, sunset, shoreline, waves, shore,",
-        
     }
-
     var ajaxOption = {
         data: theData,
         dataType: 'json',
         url: "https://api.flickr.com/services/rest",
         method: 'GET',
         success: function (response) {
-         
-            // console.log(response);
             var photoArray = response.photos.photo;
-            // console.log(photoArray);
             clearCarousel();
             for (var pIndex = 0; pIndex < photoArray.length; pIndex++) {
                 var currentPhoto = photoArray[pIndex];
@@ -251,21 +299,34 @@ function getDataPhotos() {
                 carouselImage.prepend('<img src="' + url + '" />');
                 carouselImage.children().addClass("d-block w-100");
             }
-
         }
     }
     $.ajax(ajaxOption);
 }
-
+/************************************
+ * clearCarousel
+ * @params {undefined} none
+ * @returns: {undefined} none
+ * Empties the carousel 
+ */
 function clearCarousel() {
     $('.carousel-item').empty();
 }
-
+/************************************
+ * clearModal
+ * @params {undefined} none
+ * @returns: {undefined} none
+ * Closes the modal
+ */
 function clearModal(){
-    console.log("clicked");
     $('.popup-container').css("display", "none");
 }
-
+/************************************
+ * capitalizeFirstLetters
+ * @params {undefined} none
+ * @returns: {undefined} none
+ * capitalizes the first letter of every word for input
+ */
 function capitalizeFirstLetters(){
     var inputVal = $('.inputForm').val();
     var tempArr = inputVal.split(' ');
@@ -273,10 +334,4 @@ function capitalizeFirstLetters(){
         tempArr[i] = tempArr[i].substr(0,1).toUpperCase()+tempArr[i].substr(1);
     }
     return tempArr.join(' ');
-    console.log('after capitalizedFirstLetters', tempArr);
-
 }
-function clearPage(){
-    userObj = {};
-    userInput;
- }
