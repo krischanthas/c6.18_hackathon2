@@ -26,10 +26,9 @@ function applyClickHandlers() {
     })
     $('.modal-backdrop').on('click', function(){
         $('.videoModal').addClass('hidden');
+        $('.iframe').get(0).stopVideo();
     })
     $('#closeModal').click(clearModal);
-    $('.submitButton').on('click', clearPage);
-
 }
 
 function getUserInput() {
@@ -274,9 +273,7 @@ function capitalizeFirstLetters(){
     }
     return tempArr.join(' ');
     console.log('after capitalizedFirstLetters', tempArr);
-
-}
 function clearPage(){
     userObj = {};
     userInput;
- }
+
