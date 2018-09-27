@@ -30,6 +30,7 @@ function applyClickHandlers() {
     console.log('in applyClickHandlers')
     $('.submitButton').on('click', getUserInput);
     $('.favButton').on('click', getFavorites);
+    $('.signOut').on('click', signOut);
 
     //$('.submitButton, .clearButton').on('click', );
     $('.clearButton').on('click', clearInput);
@@ -43,6 +44,13 @@ function applyClickHandlers() {
     })
     $('#closeModal').click(clearModal);
 }
+  function signOut() {
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function () {
+      console.log('User signed out.');
+    });
+  }
+
 
 function getFavorites(){
     $('.popup-container-fav').css("display", "block");
