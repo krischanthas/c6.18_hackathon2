@@ -58,6 +58,18 @@ width: 40%;
 height: 100%;
 }
 
+.popup-container-fav {
+    display: none; 
+    position: relative; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 20%;
+    float: left;
+    position:absolute;
+    z-index: 2;
+    width: 40%;
+    height: 100%;
+    }
 
 .modal-body{
 width: 100%;
@@ -122,6 +134,9 @@ display:none;
       z-index:3;
   }
 
+  .closeFav {
+    z-index:3;
+}
 
   .shoreline{
       /* z-index: 2;

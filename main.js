@@ -29,6 +29,8 @@ function initializeApp() {
 function applyClickHandlers() {
     console.log('in applyClickHandlers')
     $('.submitButton').on('click', getUserInput);
+    $('.favButton').on('click', getFavorites);
+
     //$('.submitButton, .clearButton').on('click', );
     $('.clearButton').on('click', clearInput);
     $('.liveStreamButton').on('click', getVideoData);
@@ -41,6 +43,10 @@ function applyClickHandlers() {
     })
     $('#closeModal').click(clearModal);
 }
+
+function getFavorites(){
+    $('.popup-container-fav').css("display", "block");
+    $('.closeFav').click(clearModalFav);}
 /************************************
  * getUserInput
  * @params {undefined} none
@@ -320,6 +326,10 @@ function clearCarousel() {
  */
 function clearModal(){
     $('.popup-container').css("display", "none");
+}
+
+function clearModalFav(){
+    $('.popup-container-fav').css("display", "none");
 }
 /************************************
  * capitalizeFirstLetters
