@@ -116,6 +116,7 @@ function displayMap(initial = false) {
         var request = {
             query: userInput + " beach",
             fields: ['name', 'geometry'],
+
             // types: "point_of_interest"
         }
         service.textSearch(request, getBeaches);
@@ -136,7 +137,9 @@ function displayMap(initial = false) {
                 draggable: true,
                 animation: google.maps.Animation.DROP,
                 position: pos,
+                
             });
+            getYelpData(pos);
             }
             else {
                 console.log("no results")
@@ -148,9 +151,8 @@ function displayMap(initial = false) {
             zoom: 13,
             mapTypeControl: false,
         };
-        console.log(pos);
-    var bounds =   new  google.maps.LatLngBounds({lat: 31.706264,lng: -124.726174}, {lat: 41.958086,lng:-120.060381})
-    console.log(bounds)
+      
+    
     map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
     map.setCenter(pos);
     
@@ -170,7 +172,7 @@ function displayMap(initial = false) {
         animation: google.maps.Animation.DROP,
         position: pos,
     });
-    google.maps.event.addListener(marker, 'click', getVideoData);
+    // google.maps.event.addListener(marker, 'click', getYelpData(pos));
     marker.addListener('click', toggleBounce);
     $(".container").append(map);
 }
@@ -211,11 +213,12 @@ function checkNames(response) {
  */
 function displayModal() {
     // var name = userObj.name;
+    // getWeatherData(userInput);
     displayMap();
     $('.popup-container').css("display", "block");
     // $('.modal-title').text(name); 
     $('.close').click(clearModal);
-    
+
     
    
 } 
@@ -231,23 +234,60 @@ function displayModal() {
  * @calls checkNames, getWeatherData
  * getData calls the yelp api to get coordinates to display on the map based off the user input 
  */
-function getYelpData() {
+function getYelpData(position) {
+    console.log(position);
+    var lat = position.lat; 
+    var long = position.lng;
     var settings = {
+
         "async": true,
         "url": "https://yelp.ongandy.com/businesses",
         "method": "POST",
         "dataType": "JSON",
         "data": {
-            term: userInput ,
-            location: "Orange County",
+            term: "food",
+            latitude: lat,
+            longitude: long,
             api_key: "w5ThXNvXEMnLlZYTNrvrh7Mf0ZGQNFhcP6K-LPzktl8NBZcE1_DC7X4f6ZXWb62mV8HsZkDX2Zc4p86LtU0Is9kI0Y0Ug0GvwC7FvumSylmNLfLpeikscQZw41pXW3Yx",
-            categories: "beaches",
+            categories: "restaurants, All",
+            sort_by: "rating",
+            radius: 5000,
+        
         },
         success: function (response) {
-            checkNames(response);
-            getWeatherData(userInput);
+            console.log(response);  
+          for (var index = 0; index < response.businesses.length; index++) {
+            var pos = {
+                  lat: response.businesses[index].coordinates.latitude,
+                  lng: response.businesses[index].coordinates.longitude
+              }
+              console.log(pos);
+        var content = response.businesses[index].name;
+           var infowindow = new google.maps.InfoWindow({
+                content: content
+              });
+        var icon = {
+                url: "./food.svg", // url
+                scaledSize: new google.maps.Size(30, 30), // scaled size
+            };
+           var marker = new google.maps.Marker({
+            map: map,
+            draggable: true,
+            animation: google.maps.Animation.DROP,
+            position: pos,
+            title: response.businesses[index].name,
+            icon: icon
+            });
+            google.maps.event.addListener(marker, 'click', (function(marker,content,infowindow){ 
+                return function() {
+                    infowindow.setContent(content);
+                    infowindow.open(map,marker);
+                };
+            })(marker,content,infowindow));  
+                    }
         },
         error: function (err) {
+            console.log("error");
         }
     }
     $.ajax(settings);
