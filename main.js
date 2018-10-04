@@ -48,7 +48,7 @@ function applyClickHandlers() {
  * Stores the user input and uses it to getData and run the modal while capitalizing the first letters of the input 
  */
 function getUserInput() {
-    console.log("here in input");
+ 
     userInput = $('.inputForm').val();
     userInput = capitalizeFirstLetters();
     displayModal();
@@ -114,15 +114,15 @@ function displayMap(initial = false) {
     if (userInput) {
         var service = new google.maps.places.PlacesService(map); 
         var request = {
-            query: userInput + " beach",
+            query: userInput + " beaches" ,
             fields: ['name', 'geometry'],
-
-            // types: "point_of_interest"
+            // types: ['locality', "natural_feature"]
+            
         }
         service.textSearch(request, getBeaches);
         function getBeaches(results, status) { 
             if (status === google.maps.places.PlacesServiceStatus.OK) {
-                console.log(results);
+
                 $('.modal-title').text(results[0].name); 
                 lng = results[0].geometry.location.lng();
                 lat = results[0].geometry.location.lat(); 
@@ -254,14 +254,14 @@ function getYelpData(position) {
             radius: 5000,
         
         },
-        success: function (response) {
-            console.log(response);  
+        success: function (response) {  
+          console.log(response);
           for (var index = 0; index < response.businesses.length; index++) {
             var pos = {
                   lat: response.businesses[index].coordinates.latitude,
                   lng: response.businesses[index].coordinates.longitude
               }
-              console.log(pos);
+            
         var content = response.businesses[index].name;
            var infowindow = new google.maps.InfoWindow({
                 content: content

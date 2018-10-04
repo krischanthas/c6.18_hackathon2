@@ -11,7 +11,9 @@
     margin-bottom: -1vh;
 
 }
-
+#markerLayer {
+    
+}
 .backButton {
     text-shadow: 1px 1px 1px #ccc;
     font-size: 2.5em;
