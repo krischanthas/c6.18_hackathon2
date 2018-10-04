@@ -2,6 +2,7 @@
  * Listen for the doucment to load and initialize the application
  */
 $(document).ready(initializeApp);
+var previousRoute = false;
 /************************************
  * Define all global variables here
  */
@@ -80,23 +81,61 @@ function inputEnter() {
  * @returns: {undefined} none.
  * Displays the map on load and the marker of location
  */
-function displayMap(initial = false) {
-  getPhotos();
-  if (initial === true) {
-    var pos = {
-      lat: 33.634867,
-      lng: -117.740499
-    };
-  }
-  if (navigator.geolocation && initial === true) {
-    navigator.geolocation.getCurrentPosition(function(position) {
-      pos = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
-      };
 
-      map.setCenter(pos);
-      marker = new google.maps.Marker({
+function displayMap(initial = false) {   
+    getPhotos();
+   if (initial === true){
+    var pos = {
+        lat : 33.634867,
+        lng : -117.740499
+       }
+    }
+    if (navigator.geolocation && initial === true) {
+       navigator.geolocation.getCurrentPosition(function(position) {
+              pos = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+             }
+             currentPos = pos;
+            map.setCenter(pos);
+            marker = new google.maps.Marker({
+                map: map,
+                draggable: true,
+                animation: google.maps.Animation.DROP,
+                position: pos,
+            });
+        })
+    }
+
+    var mapProp = {
+        zoom: 13,
+        mapTypeControl: false,
+    };
+  
+
+map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+    
+    if (userInput) {         
+                checkUserInput(map);
+            }
+        else {
+                console.log("no results")
+        }
+    
+     
+    map.setCenter(pos);
+    
+        // var pos = {
+        // lat : userObj.coordinates.latitude,
+        // lng : userObj.coordinates.longitude }
+        // mapProp = {
+        //     center: new google.maps.LatLng(pos),
+        //     zoom: 13,
+        //     mapTypeControl: false,
+        // };
+
+    
+    marker = new google.maps.Marker({
         map: map,
         draggable: true,
         animation: google.maps.Animation.DROP,
@@ -465,4 +504,89 @@ function capitalizeFirstLetters() {
     tempArr[i] = tempArr[i].substr(0, 1).toUpperCase() + tempArr[i].substr(1);
   }
   return tempArr.join(" ");
+}
+
+function checkUserInput(map) {
+    var service = new google.maps.places.PlacesService(map); 
+        var request = {
+            query: userInput + " beaches" ,
+            fields: ['name', 'geometry'],
+            // types: ['locality', "natural_feature"]
+        }
+        service.textSearch(request, getBeaches);
+        function getBeaches(results, status) { 
+            if (status === google.maps.places.PlacesServiceStatus.OK) {
+                if (navigator.geolocation.hasOwnProperty()) {
+                    navigator.geolocation.getCurrentPosition(function(position) {
+                          var currentPos = {
+                             lat: position.coords.latitude,
+                             lng: position.coords.longitude
+                          }
+                      
+                    $('.modal-title').text(results[0].name); 
+                    lng = results[0].geometry.location.lng();
+                    lat = results[0].geometry.location.lat(); 
+                    var pos = {
+                        lat: lat,
+                        lng: lng
+                        }
+                     directionObjects = {
+                            origin: currentPos,
+                            destination: pos,
+                            travelMode: "DRIVING",
+                            avoidTolls: true,
+                            unitSystem: google.maps.UnitSystem.IMPERIAL,
+                        }
+                        var directionsService = new google.maps.DirectionsService
+            let display = new google.maps.DirectionsRenderer({
+                draggable: false,
+                map: map,
+            });
+            directionsService.route(directionObjects, (response, status) => {
+                console.log(response);
+                directions = response.routes[0].legs[0].steps;
+                if (status === 'OK') {
+                    if (previousRoute) {
+                        previousRoute.setMap(null);
+                    }
+                    previousRoute = display;
+                    display.setDirections(response);
+                    // $('#info-box').empty();
+                //     for (var i = 0; i < directions.length; i++) {
+
+                //         var currentDirection = $("<p>").html(directions[i].instructions);
+                //         $('#info-box').append(currentDirection)
+                //     }
+                //     $('#details-modal').modal('hide');
+                }
+            });
+                    // map.setCenter(pos);
+                    // marker = new google.maps.Marker({
+                    //     map: map,
+                    //     draggable: true,
+                    //     animation: google.maps.Animation.DROP,
+                    //     position: pos,
+                    //                 });
+                                })
+                            }
+                            else {
+                                $('.modal-title').text(results[0].name); 
+                                lng = results[0].geometry.location.lng();
+                                lat = results[0].geometry.location.lat(); 
+                                var pos = {
+                                    lat: lat,
+                                    lng: lng
+                                    }
+                                map.setCenter(pos);
+                                marker = new google.maps.Marker({
+                                    map: map,
+                                    draggable: true,
+                                    animation: google.maps.Animation.DROP,
+                                    position: pos,
+                                                });
+                                } 
+                        }
+       
+                
+    }
 }
