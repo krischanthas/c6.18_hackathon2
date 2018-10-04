@@ -12,13 +12,13 @@ var userObj = {};
  * InitializeApp 
  * @params {undefined} none
  * @returns: {undefined} none
- * @calls: applyClickHandlers, getDataPhotos, inputEnter
+ * @calls: applyClickHandlers, getPhotos, inputEnter
  * Initializes the application including adding the handlers and pulling in any data from the server
  */
 function initializeApp() {
     applyClickHandlers();
-    getDataPhotos();
-    inputEnter();
+    getPhotos();
+    displayMap(true);
 }
 /************************************
  * applyClickHandlers
@@ -27,7 +27,6 @@ function initializeApp() {
  * Applies clicks on element to call certain functions whenclicked
  */
 function applyClickHandlers() {
-    console.log('in applyClickHandlers')
     $('.submitButton').on('click', getUserInput);
     //$('.submitButton, .clearButton').on('click', );
     $('.clearButton').on('click', clearInput);
@@ -49,9 +48,9 @@ function applyClickHandlers() {
  * Stores the user input and uses it to getData and run the modal while capitalizing the first letters of the input 
  */
 function getUserInput() {
+ 
     userInput = $('.inputForm').val();
     userInput = capitalizeFirstLetters();
-    getData();
     displayModal();
 }
 /************************************
@@ -82,34 +81,98 @@ function inputEnter() {
  * @returns: {undefined} none.
  * Displays the map on load and the marker of location
  */
-function displayMap() {
-    var lati = 33.634867;
-    var long = -117.740499;
-    var mapProp = {
-        center: new google.maps.LatLng(lati, long),
-        zoom: 13,
-        mapTypeControl: false,
-    };
-    if (userObj.coordinates) {
-        lati = userObj.coordinates.latitude;
-        long = userObj.coordinates.longitude;
-        mapProp = {
-            center: new google.maps.LatLng(lati, long),
+function displayMap(initial = false) {   
+
+    getPhotos();
+   if (initial === true){
+    var pos = {
+        lat : 33.634867,
+        lng : -117.740499
+       }
+    }
+    if (navigator.geolocation && initial === true) {
+       navigator.geolocation.getCurrentPosition(function(position) {
+
+              pos = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+             }
+            
+            map.setCenter(pos);
+            marker = new google.maps.Marker({
+                map: map,
+                draggable: true,
+                animation: google.maps.Animation.DROP,
+                position: pos,
+            });
+        
+        })
+    }
+
+      
+    
+    if (userInput) {
+        var service = new google.maps.places.PlacesService(map); 
+        var request = {
+            query: userInput + " beaches" ,
+            fields: ['name', 'geometry'],
+            // types: ['locality', "natural_feature"]
+            
+        }
+        service.textSearch(request, getBeaches);
+        function getBeaches(results, status) { 
+            if (status === google.maps.places.PlacesServiceStatus.OK) {
+
+                $('.modal-title').text(results[0].name); 
+                lng = results[0].geometry.location.lng();
+                lat = results[0].geometry.location.lat(); 
+                 var pos = {
+                    lat: lat,
+                    lng: lng
+                    
+                }
+             map.setCenter(pos);
+             marker = new google.maps.Marker({
+                map: map,
+                draggable: true,
+                animation: google.maps.Animation.DROP,
+                position: pos,
+                
+            });
+            getYelpData(pos);
+            }
+            else {
+                console.log("no results")
+            }
+        }
+            
+        }
+        var mapProp = {
             zoom: 13,
             mapTypeControl: false,
         };
-    }
-    var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+      
+    
+    map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+    map.setCenter(pos);
+    
+        // var pos = {
+        // lat : userObj.coordinates.latitude,
+        // lng : userObj.coordinates.longitude }
+        // mapProp = {
+        //     center: new google.maps.LatLng(pos),
+        //     zoom: 13,
+        //     mapTypeControl: false,
+        // };
+
+    
     marker = new google.maps.Marker({
         map: map,
         draggable: true,
         animation: google.maps.Animation.DROP,
-        position: {
-            lat: lati,
-            lng: long
-        },
+        position: pos,
     });
-    google.maps.event.addListener(marker, 'click', getVideoData);
+    // google.maps.event.addListener(marker, 'click', getYelpData(pos));
     marker.addListener('click', toggleBounce);
     $(".container").append(map);
 }
@@ -134,47 +197,97 @@ function toggleBounce() {
  * Stores the result from Yelp data based on what the user inputs into userObj and runs the coordinate into display maps 
  */
 function checkNames(response) {
-            userObj = response.businesses[0];
+        //     userObj = response.results;
+        //    var  latitude = userObj.location.lat
+        //   var longitude =  userObj.location.long
+    userObj = response.businesses[0];       
     displayMap();
+    
 }
 /************************************
  * displayModal
  * @params {undefined} none
  * @returns: {undefined} none
- * @calls getDataPhotos
+ * @calls getPhotos
  * Shows the modal and displays the name for the input the user placed. Also holds the carousel photo gallery
  */
 function displayModal() {
-    var name = userObj.name;
+    // var name = userObj.name;
+    // getWeatherData(userInput);
+    displayMap();
     $('.popup-container').css("display", "block");
-    $('.modal-title').text(name); 
+    // $('.modal-title').text(name); 
     $('.close').click(clearModal);
-    getDataPhotos();
+
+    
    
-}
+} 
+/********************
+ * getBeaches
+ *  get Beaches usings google places library to obtain beach
+ */
+
 /************************************
- * getData
+ * getYelpData
  * @params {undefined} none
  * @returns: {undefined} none
  * @calls checkNames, getWeatherData
  * getData calls the yelp api to get coordinates to display on the map based off the user input 
  */
-function getData() {
+function getYelpData(position) {
+    console.log(position);
+    var lat = position.lat; 
+    var long = position.lng;
     var settings = {
+
+        "async": true,
         "url": "https://yelp.ongandy.com/businesses",
         "method": "POST",
         "dataType": "JSON",
         "data": {
-            term: userInput + " beach",
-            location: "Orange County",
+            term: "food",
+            latitude: lat,
+            longitude: long,
             api_key: "w5ThXNvXEMnLlZYTNrvrh7Mf0ZGQNFhcP6K-LPzktl8NBZcE1_DC7X4f6ZXWb62mV8HsZkDX2Zc4p86LtU0Is9kI0Y0Ug0GvwC7FvumSylmNLfLpeikscQZw41pXW3Yx",
-            categories: "beaches",
+            categories: "restaurants, All",
+            sort_by: "rating",
+            radius: 5000,
+        
         },
-        success: function (response) {
-            checkNames(response);
-            getWeatherData(userInput);
+        success: function (response) {  
+          console.log(response);
+          for (var index = 0; index < response.businesses.length; index++) {
+            var pos = {
+                  lat: response.businesses[index].coordinates.latitude,
+                  lng: response.businesses[index].coordinates.longitude
+              }
+            
+        var content = response.businesses[index].name;
+           var infowindow = new google.maps.InfoWindow({
+                content: content
+              });
+        var icon = {
+                url: "./food.svg", // url
+                scaledSize: new google.maps.Size(30, 30), // scaled size
+            };
+           var marker = new google.maps.Marker({
+            map: map,
+            draggable: true,
+            animation: google.maps.Animation.DROP,
+            position: pos,
+            title: response.businesses[index].name,
+            icon: icon
+            });
+            google.maps.event.addListener(marker, 'click', (function(marker,content,infowindow){ 
+                return function() {
+                    infowindow.setContent(content);
+                    infowindow.open(map,marker);
+                };
+            })(marker,content,infowindow));  
+                    }
         },
         error: function (err) {
+            console.log("error");
         }
     }
     $.ajax(settings);
@@ -264,13 +377,13 @@ function getWeatherData() {
     $.ajax(ajaxConfig);
 }
 /************************************
- * getDataPhotos
+ * getPhotos
  * @params {undefined} none
  * @returns: {undefined} none
  * @calls clearCarousel
  * Gets the photos from Flickr API and appends them to a gallery on the modal
  */
-function getDataPhotos() {
+function getPhotos() {
     var theData = {
         api_key: "b5e905e415b7b888752b23f5629b2410",
         method: "flickr.photos.search",
