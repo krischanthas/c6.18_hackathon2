@@ -13,6 +13,7 @@
         crossorigin="anonymous"></script>
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
         crossorigin="anonymous">
+        
         <script type="text/javascript" src="https://www.google.com/jsapi">google.load("search", "2");</script>
     <script src="main.js"></script> 
     <link rel="stylesheet" href="style.css">
@@ -70,45 +71,71 @@
                     <p></p>
 
 
+                    <!--Bootstrap Tabs-->
+                    <ul class="nav nav-tabs" role="tablist">
+                            <li class="nav-item">
+                              <a class="nav-link active" href="#infoTab" role="tab" data-toggle="tab">Info/Weather</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link" href="#foodTab" role="tab" data-toggle="tab">Food</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link" href="#directionsTab" role="tab" data-toggle="tab">Directions</a>
+                            </li>
+                          </ul>
+                          
+                          <!-- Tab panes -->
+                          <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane fade in active" id="infoTab"> 
+                                <div>Carousel/Weather</div>
+                                <!--BootStrap Carousel -->
+                                <!-- <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                                       <ol class="carousel-indicators">
+                                           <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                                           <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                                           <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                                           <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+                                           <li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
+                                       </ol>
+                                       <div class="carousel-inner">
+                                           <div class="carousel-item carousel-image1 active">
+                               
+                                           </div>
+                                           <div class="carousel-item carousel-image2">
 
+                                           </div>
+                                           <div class="carousel-item carousel-image3">
 
-                    <!--BootStrap Carousel -->
-                    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-                        <ol class="carousel-indicators">
-                            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-                            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-                            <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
-                            <li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
-                        </ol>
-                        <div class="carousel-inner">
-                            <div class="carousel-item carousel-image1 active">
+                                        </div>
+                                           <div class="carousel-item carousel-image4">
 
+                                        </div>
+                                           <div class="carousel-item carousel-image5">
+
+                                        </div>
+                                       </div>
+                                       <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                                           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                           <span class="sr-only">Previous</span>
+                                       </a>
+                                       <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                                           <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                           <span class="sr-only">Next</span>
+                                       </a>
+                                   </div>
+                               </div> -->
+                               <!--Carousel End -->     
+                            
+                            
                             </div>
-                            <div class="carousel-item carousel-image2">
-                                <!-- append images here-->
-                            </div>
-                            <div class="carousel-item carousel-image3">
-                                <!-- append images here-->
-                            </div>
-                            <div class="carousel-item carousel-image4">
-                                    <!-- append images here-->
-                                </div>
-                            <div class="carousel-item carousel-image5">
-                                        <!-- append images here-->
-                                </div>
-                        </div>
-                        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="sr-only">Previous</span>
-                        </a>
-                        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="sr-only">Next</span>
-                        </a>
-                    </div>
-                </div>
-                <!--Carousel End -->
+                            <div role="tabpanel" class="tab-pane fade" id="foodTab">Food</div>
+                            <div role="tabpanel" class="tab-pane fade" id="directionsTab">Directions</div>
+                          </div>
+                            
+                         
+                       
+                    
+
                 <div class="modal-footer">
                     <button type="button" class="liveStreamButton btn btn-secondary" data-dismiss="modal">Live Stream</button>
 
