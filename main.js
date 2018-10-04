@@ -141,63 +141,6 @@ map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
         animation: google.maps.Animation.DROP,
         position: pos
       });
-    });
-  }
-
-  if (userInput) {
-    var service = new google.maps.places.PlacesService(map);
-    var request = {
-      query: userInput + " beaches",
-      fields: ["name", "geometry"]
-      // types: ['locality', "natural_feature"]
-    };
-    service.textSearch(request, getBeaches);
-    function getBeaches(results, status) {
-      if (status === google.maps.places.PlacesServiceStatus.OK) {
-        $(".modal-title").text(results[0].name);
-        lng = results[0].geometry.location.lng();
-        lat = results[0].geometry.location.lat();
-        var pos = {
-          lat: lat,
-          lng: lng
-        };
-        map.setCenter(pos);
-        marker = new google.maps.Marker({
-          map: map,
-          draggable: true,
-          animation: google.maps.Animation.DROP,
-          position: pos
-        });
-        getYelpData(pos);
-      } else {
-        console.log("no results");
-      }
-    }
-  }
-  var mapProp = {
-    zoom: 13,
-    mapTypeControl: false
-  };
-
-  map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
-  map.setCenter(pos);
-
-  // var pos = {
-  // lat : userObj.coordinates.latitude,
-  // lng : userObj.coordinates.longitude }
-  // mapProp = {
-  //     center: new google.maps.LatLng(pos),
-  //     zoom: 13,
-  //     mapTypeControl: false,
-  // };
-
-  marker = new google.maps.Marker({
-    map: map,
-    draggable: true,
-    animation: google.maps.Animation.DROP,
-    position: pos
-  });
-  // google.maps.event.addListener(marker, 'click', getYelpData(pos));
   marker.addListener("click", toggleBounce);
   $(".container").append(map);
 }
@@ -256,7 +199,6 @@ function displayModal() {
  * getData calls the yelp api to get coordinates to display on the map based off the user input
  */
 function getYelpData(position) {
-  console.log(position);
   var lat = position.lat;
   var long = position.lng;
   var settings = {
@@ -281,23 +223,23 @@ function getYelpData(position) {
           lat: response.businesses[index].coordinates.latitude,
           lng: response.businesses[index].coordinates.longitude
         };
-        
+    
         // restaurant name
         var content = response.businesses[index].name; // returns string
-        //restaurant address
-        var address = response.businesses[index].display_address[0]+response.businesses[index].display_address[1]; 
-        // restaurant type
+        // //restaurant address
+        // var address = response.businesses[index].display_address[0]+response.businesses[index].display_address[1]; 
+        // // restaurant type
         var category = response.businesses[index].categories[0].title; // returns string
-        // phone number
+        // // phone number
         var phone = response.businesses[index].display_phone; // return string
-        // price 
-        var price = response.businesses[index].price; // returns string
-        // rating
-        var rating = response.businesses[index].rating; // returns int
-        // restaurant image url
-        var imageUrl = response.businesses[index].image_url; // url string
-        // open-status
-        var openstatus = response.businesses[index].is_closed; // returns boolean
+        // // price 
+        // var price = response.businesses[index].price; // returns string
+        // // rating
+        // var rating = response.businesses[index].rating; // returns int
+        // // restaurant image url
+        // var imageUrl = response.businesses[index].image_url; // url string
+        // // open-status
+        // var openstatus = response.businesses[index].is_closed; // returns boolean
         
         
         // pop up window
@@ -551,6 +493,7 @@ function checkUserInput(map) {
                     }
                     previousRoute = display;
                     display.setDirections(response);
+                    getYelpData(pos);
                     // $('#info-box').empty();
                 //     for (var i = 0; i < directions.length; i++) {
 
@@ -577,6 +520,7 @@ function checkUserInput(map) {
                                     lat: lat,
                                     lng: lng
                                     }
+                                    getYelpData(pos);
                                 map.setCenter(pos);
                                 marker = new google.maps.Marker({
                                     map: map,
@@ -584,6 +528,7 @@ function checkUserInput(map) {
                                     animation: google.maps.Animation.DROP,
                                     position: pos,
                                                 });
+                                   
                                 } 
                         }
        
