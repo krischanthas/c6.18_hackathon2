@@ -11,14 +11,23 @@
     margin-bottom: -1vh;
 
 }
-#markerLayer {
-    
-}
+
 .backButton {
     text-shadow: 1px 1px 1px #ccc;
     font-size: 2.5em;
 
 }
+
+/* Carousel in Modal active CSS NEW */
+.tab-content > .tab-pane {
+    display: block;
+    height: 0;
+}
+
+.tab-content > .active {
+    height: auto;
+}
+
 body{
 margin: 0;
 overflow: hidden;
