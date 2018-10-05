@@ -54,7 +54,8 @@ width: 100%;
 }
 
 .modal-content{
-    height: 60vh;
+    overflow: hidden;
+    height: 70vh;
 }
 
 .popup-container {
@@ -99,6 +100,11 @@ line-height: 7.5;
 
 .carousel-item{
 height: 35vh;
+}
+.tab-content {
+    height: 200px;
+    width: 100%;
+    overflow: scroll;   
 }
 
 
