@@ -17,8 +17,20 @@
     font-size: 2.5em;
 
 }
+
+/* Carousel in Modal active CSS NEW */
+.tab-content > .tab-pane {
+    display: block;
+    height: 0;
+}
+
+.tab-content > .active {
+    height: auto;
+}
+
 body{
 margin: 0;
+overflow: hidden;
 }
 .container{
 width: 100%;
@@ -42,7 +54,8 @@ width: 100%;
 }
 
 .modal-content{
-    height: 60vh;
+    overflow: hidden;
+    height: 70vh;
 }
 
 .popup-container {
@@ -87,6 +100,12 @@ line-height: 7.5;
 
 .carousel-item{
 height: 35vh;
+}
+.tab-content {
+    height: 200px;
+    width: 100%;
+    overflow: scroll;   
+    overflow-x: hidden;
 }
 
 
