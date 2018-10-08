@@ -135,12 +135,12 @@ map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
         // };
 
     
-    marker = new google.maps.Marker({
-        map: map,
-        draggable: true,
-        animation: google.maps.Animation.DROP,
-        position: pos
-      });
+    // marker = new google.maps.Marker({
+    //     map: map,
+    //     draggable: true,
+    //     animation: google.maps.Animation.DROP,
+    //     position: pos
+    //   });
   marker.addListener("click", toggleBounce);
   $(".container").append(map);
 }
@@ -458,7 +458,7 @@ function checkUserInput(map) {
         service.textSearch(request, getBeaches);
         function getBeaches(results, status) { 
             if (status === google.maps.places.PlacesServiceStatus.OK) {
-                if (navigator.geolocation.hasOwnProperty()) {
+                if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(function(position) {
                           var currentPos = {
                              lat: position.coords.latitude,
@@ -494,13 +494,14 @@ function checkUserInput(map) {
                     previousRoute = display;
                     display.setDirections(response);
                     getYelpData(pos);
-                    // $('#info-box').empty();
-                //     for (var i = 0; i < directions.length; i++) {
+                    var directions = response.routes[0].legs[0].steps
+                    $('#directionsTab').empty();
+                    for (var i = 0; i < directions.length; i++) {
 
-                //         var currentDirection = $("<p>").html(directions[i].instructions);
-                //         $('#info-box').append(currentDirection)
-                //     }
-                //     $('#details-modal').modal('hide');
+                        var currentDirection = $("<p>").html(directions[i].instructions);
+                        $('#directionsTab').append(currentDirection)
+                    }
+                    
                 }
             });
                     // map.setCenter(pos);
