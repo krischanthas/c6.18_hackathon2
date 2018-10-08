@@ -433,6 +433,13 @@ function clearCarousel() {
 
 function createCarousel() {
   $('#carouselExampleIndicators').removeClass('hidden')
+  $('#infoTab').addClass('active')
+  $('#infoTab').addClass('show')
+  $('#foodTab').removeClass('show')
+  $('#foodTab').removeClass('active')
+  $('#directionsTab').removeClass('show')
+  $('#directionsTab').removeClass('active')
+  
 
 }
 
@@ -441,6 +448,7 @@ function destroyCarousel() {
   $('#infoTab').removeClass('active')
   $('#infoTab').removeClass('show')
   $('#carouselExampleIndicators').addClass('hidden');
+  
 }
 
 /************************************
