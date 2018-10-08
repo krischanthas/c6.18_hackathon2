@@ -101,7 +101,7 @@ line-height: 7.5;
 .carousel-item{
 height: 35vh;
 }
-.tab-content {
+#directionsTab {
     height: 200px;
     width: 100%;
     overflow: scroll;   
@@ -159,5 +159,25 @@ display:none;
       display:inline;
   } */
 .close {
+    z-index: 3;
+}
+.tab-content > .tab-pane {
+   display: block;
+   height: 0;
+}
+.tab-content > .active {
+    height: auto !important;
+}
+.hidden {
+    display: none;
+}
+#carouselExampleIndicators > div{
+    z-index: 0
+}
+.d-block {
+    z-index: 0
+}
+
+#directionsTab {
     z-index: 3;
 }
