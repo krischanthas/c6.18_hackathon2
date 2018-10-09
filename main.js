@@ -20,6 +20,7 @@ function initializeApp() {
   applyClickHandlers();
   getPhotos();
   displayMap(true);
+
 }
 /************************************
  * applyClickHandlers
@@ -141,7 +142,7 @@ map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
     //     animation: google.maps.Animation.DROP,
     //     position: pos
     //   });
-  marker.addListener("click", toggleBounce);
+  // marker.addListener("click", toggleBounce);
   $(".container").append(map);
 }
 /************************************
@@ -326,19 +327,26 @@ function displayVideo(response) {
  * @returns: {undefined} none
  * Gets weather data from API and appends type of weather based on data received as well as showing temperature
  */
-function getWeatherData() {
+function getWeatherData(pos) {
+  var lat = pos.lat
+  var lng = pos.lng 
+  console.log("http://api.openweathermap.org/data/2.5/forecast?lat=" +
+    lat + "&lon=" + lng + "&APPID=f91cd80c3f28fab67ca696381fb71d30")
   $(".mainDisplay").empty();
-  var cityName = userObj.location.city;
   var ajaxConfig = {
     url:
-      "http://api.openweathermap.org/data/2.5/weather?q=" +
-      cityName +
-      "&units=imperial&APPID=f91cd80c3f28fab67ca696381fb71d30",
+      // "http://api.openweathermap.org/data/2.5/weather?q=" +
+      // cityName +
+      // "&units=imperial&APPID=f91cd80c3f28fab67ca696381fb71d30",
+     "http://api.openweathermap.org/data/2.5/forecast?lat=" +
+      lat + "&lon=" + lng + "&APPID=f91cd80c3f28fab67ca696381fb71d30",
     dataType: "json",
     method: "get",
     success: function(response) {
-      var weather = response.main.temp;
+      // var weather = response.main.temp;
+      console.log(response);
       var condition = response.weather[0].main;
+      console.log('condition within weather', condition)
       var symbol;
       switch (condition) {
         case "Haze":
@@ -356,16 +364,19 @@ function getWeatherData() {
       }
       var conditionSymbol = $("<i>").addClass(symbol);
       $(".modal-title").text(userInput);
+      console.log('weather api condition', condition)
       $(".mainDisplay").append(conditionSymbol, `  ${condition}`);
-      $(".temp").text(`Current temperature: ${weather}°F `);
+      // $(".temp").text(`Current temperature: ${weather}°F `);
     },
     error: function() {
+      console.log('weather ajax error')
       if (userInput.includes("Beach")) {
         userInput = userInput.replace("Beach", "");
         getWeatherData(userInput);
       }
     }
   };
+
   $.ajax(ajaxConfig);
 }
 /************************************
@@ -494,6 +505,7 @@ function checkUserInput(map) {
                     previousRoute = display;
                     display.setDirections(response);
                     getYelpData(pos);
+                    getWeatherData(pos)
                     var directions = response.routes[0].legs[0].steps
                     $('#directionsTab').empty();
                     for (var i = 0; i < directions.length; i++) {
@@ -522,6 +534,7 @@ function checkUserInput(map) {
                                     lng: lng
                                     }
                                     getYelpData(pos);
+                                    getWeatherData(pos)
                                 map.setCenter(pos);
                                 marker = new google.maps.Marker({
                                     map: map,
