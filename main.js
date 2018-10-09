@@ -337,14 +337,13 @@ function getWeatherData() {
   $(".mainDisplay").empty();
   var cityName = userObj.location.city;
   var ajaxConfig = {
-    url: "http://api.openweathermap.org/data/2.5/weather?q=" +
-      cityName +
-      "&units=imperial&APPID=f91cd80c3f28fab67ca696381fb71d30",
+    url: "http://api.openweathermap.org/data/2.5/forecast?lat=" +
+      lat + "&lon=" + lng + "&APPID=f91cd80c3f28fab67ca696381fb71d30",
     dataType: "json",
     method: "get",
     success: function (response) {
-      var weather = response.main.temp;
-      var condition = response.weather[0].main;
+      console.log('response for weather', response);
+      var condition = response.list[0].weather[0].main;
       var symbol;
       switch (condition) {
         case "Haze":
@@ -361,8 +360,8 @@ function getWeatherData() {
           break;
       }
       var conditionSymbol = $("<i>").addClass(symbol);
-      $(".modal-title").text(userInput);
-      $(".mainDisplay").append(conditionSymbol, `  ${condition}`);
+      $(".weather-info").text('userInput');
+      $(".weather-info").append(conditionSymbol, `  ${condition}`);
       $(".temp").text(`Current temperature: ${weather}°F `);
     },
     error: function () {
