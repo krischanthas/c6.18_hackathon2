@@ -330,6 +330,8 @@ function displayVideo(response) {
 function getWeatherData(pos) {
   var lat = pos.lat
   var lng = pos.lng 
+  console.log('lat: ',lat);
+  console.log('lng: ',lng);
   console.log("http://api.openweathermap.org/data/2.5/forecast?lat=" +
     lat + "&lon=" + lng + "&APPID=f91cd80c3f28fab67ca696381fb71d30")
   $(".mainDisplay").empty();
@@ -344,8 +346,8 @@ function getWeatherData(pos) {
     method: "get",
     success: function(response) {
       // var weather = response.main.temp;
-      console.log(response);
-      var condition = response.weather[0].main;
+      console.log('response: ',response);
+      var condition = response.list[0].weather[0].main;
       console.log('condition within weather', condition)
       var symbol;
       switch (condition) {
@@ -363,7 +365,7 @@ function getWeatherData(pos) {
           break;
       }
       var conditionSymbol = $("<i>").addClass(symbol);
-      $(".modal-title").text(userInput);
+      $(".modal-title").text(condition);
       console.log('weather api condition', condition)
       $(".mainDisplay").append(conditionSymbol, `  ${condition}`);
       // $(".temp").text(`Current temperature: ${weather}°F `);
