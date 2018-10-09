@@ -333,9 +333,10 @@ function displayVideo(response) {
  * @returns: {undefined} none
  * Gets weather data from API and appends type of weather based on data received as well as showing temperature
  */
-function getWeatherData() {
+function getWeatherData(position) {
   $(".mainDisplay").empty();
-  var cityName = userObj.location.city;
+  var lat = position.lat;
+  var lng = position.lng;
   var ajaxConfig = {
     url: "http://api.openweathermap.org/data/2.5/forecast?lat=" +
       lat + "&lon=" + lng + "&APPID=f91cd80c3f28fab67ca696381fb71d30",
@@ -344,6 +345,8 @@ function getWeatherData() {
     success: function (response) {
       console.log('response for weather', response);
       var condition = response.list[0].weather[0].main;
+      var temp = ((response.list[0].main.temp) * 9 / 5 - 459.67).toFixed(2);
+      console.log('temp', temp)
       var symbol;
       switch (condition) {
         case "Haze":
@@ -359,10 +362,10 @@ function getWeatherData() {
           symbol = "fas fa-umbrella";
           break;
       }
+      debugger;
       var conditionSymbol = $("<i>").addClass(symbol);
-      $(".weather-info").text('userInput');
-      $(".weather-info").append(conditionSymbol, `  ${condition}`);
-      $(".temp").text(`Current temperature: ${weather}°F `);
+      $(".weather-info").append(`<p>Mon ${condition}</p> ${temp}°F `);
+      // $(".weather-info").append(`${temp}°F `);
     },
     error: function () {
       if (userInput.includes("Beach")) {
@@ -526,6 +529,7 @@ function checkUserInput(map) {
                 previousRoute = display;
                 display.setDirections(response);
                 getYelpData(pos);
+                getWeatherData(pos);
                 var directions = response.routes[0].legs[0].steps
                 $('#directionsTab').empty();
                 for (var i = 0; i < directions.length; i++) {
@@ -554,6 +558,7 @@ function checkUserInput(map) {
             lng: lng
           }
           getYelpData(pos);
+          getWeatherData(pos);
           map.setCenter(pos);
           marker = new google.maps.Marker({
             map: map,

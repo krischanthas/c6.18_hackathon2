@@ -181,3 +181,7 @@ display:none;
 #directionsTab {
     z-index: 3;
 }
+
+.weather-info > p {
+    display: inline;
+}
