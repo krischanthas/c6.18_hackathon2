@@ -344,8 +344,7 @@ function getWeatherData(position) {
     method: "get",
     success: function (response) {
       console.log('response for weather', response);
-      var condition = response.list[0].weather[0].main;
-      var temp = ((response.list[0].main.temp) * 9 / 5 - 459.67).toFixed(2);
+      var i = 0;
       console.log('temp', temp)
       var symbol;
       switch (condition) {
@@ -363,7 +362,15 @@ function getWeatherData(position) {
           break;
       }
       debugger;
-      var conditionSymbol = $("<i>").addClass(symbol);
+      while(i < response.list.length){
+        var conditionSymbol = $("<i>").addClass(symbol);
+        var condition = response.list[i].weather[0].main;
+        var temp = ((response.list[i].main.temp) * 9 / 5 - 459.67).toFixed(2);
+        var date = response.list[i].dt_txt;
+        $(".weather-info").append(`<p>${date}</p>`);
+        $(".weather-info").append(`<p>Mon${conditionSymbol} ${condition}</p> ${temp}°F `);
+        i += 7;
+      }
       $(".weather-info").append(`<p>Mon ${condition}</p> ${temp}°F `);
       // $(".weather-info").append(`${temp}°F `);
     },
