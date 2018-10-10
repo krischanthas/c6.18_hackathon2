@@ -337,6 +337,7 @@ function getWeatherData(position) {
   $(".mainDisplay").empty();
   var lat = position.lat;
   var lng = position.lng;
+  var i = 0;
   var ajaxConfig = {
     url: "http://api.openweathermap.org/data/2.5/forecast?lat=" +
       lat + "&lon=" + lng + "&APPID=f91cd80c3f28fab67ca696381fb71d30",
@@ -344,34 +345,39 @@ function getWeatherData(position) {
     method: "get",
     success: function (response) {
       console.log('response for weather', response);
-      var i = 0;
       console.log('temp', temp)
-      var symbol;
-      switch (condition) {
-        case "Haze":
-          symbol = "fas fa-cloud";
-          break;
-        case "Clouds":
-          symbol = "fas fa-cloud";
-          break;
-        case "Clear":
-          symbol = "fas fa-sun";
-          break;
-        case "Rain":
-          symbol = "fas fa-umbrella";
-          break;
-      }
+
       debugger;
       while(i < response.list.length){
-        var conditionSymbol = $("<i>").addClass(symbol);
         var condition = response.list[i].weather[0].main;
+        var symbol;
+        switch (condition) {
+          case "Haze":
+            symbol = "fas fa-cloud";
+            break;
+          case "Clouds":
+            symbol = "fas fa-cloud";
+            break;
+          case "Clear":
+            symbol = "fas fa-sun";
+            break;
+          case "Rain":
+            symbol = "fas fa-umbrella";
+            break;
+        }
+        var conditionSymbol = $("<i>").addClass(symbol);
         var temp = ((response.list[i].main.temp) * 9 / 5 - 459.67).toFixed(2);
-        var date = response.list[i].dt_txt;
+        var date = response.list[i].dt_txt.slice(0, 10);
+        // console.log()
+        // jQuery('<div/>', {
+        //   class: 'weather',
+        // }).appendTo('.weather-info');
         $(".weather-info").append(`<p>${date}</p>`);
-        $(".weather-info").append(`<p>Mon${conditionSymbol} ${condition}</p> ${temp}°F `);
+        $(".weather-info").append(conditionSymbol, `${condition} ${temp}°F`);
+        // $(".weather").append(`<p> ${condition} ${temp}°F </p> `);
         i += 7;
       }
-      $(".weather-info").append(`<p>Mon ${condition}</p> ${temp}°F `);
+      // $(".weather-info").append(conditionSymbol `${condition} ${temp}°F `);
       // $(".weather-info").append(`${temp}°F `);
     },
     error: function () {
