@@ -354,9 +354,42 @@ function getWeatherData(pos) {
     dataType: "json",
     method: "get",
     success: function(response) {
+      $(".weather-info").empty();
       // var weather = response.main.temp;
       console.log('response: ',response);
-      var condition = response.list[0].weather[0].main;
+      currentDate = new Date('2018-10-12 00:00:00');
+      console.log(currentDate.getDay());
+      console.log(response.list.length);
+      for (var weatherIndex = 4; weatherIndex < response.list.length; weatherIndex) {
+        var condition = response.list[weatherIndex].weather[0].main;
+        var date = response.list[weatherIndex].dt_txt
+        currentDate = new Date(date);
+        var dayInterval = currentDate.getDay(); 
+        switch(dayInterval) {
+          case 0:
+          day = "Sunday";
+          break;
+        case 1:
+          day = "Monday";
+          break;
+        case 2:
+          day = "Tuesday";
+          break;
+        case 3:
+          day = "Wednesday"
+          break;
+        case 4:
+          day = "Thursday"
+          break;
+        case 5:
+          day = "Friday"
+          break;
+        case 6:
+          day = "Saturday"
+          break;
+        } 
+        console.log(day);
+        console.log(date);
       console.log('condition within weather', condition)
       var symbol;
       switch (condition) {
@@ -373,11 +406,23 @@ function getWeatherData(pos) {
           symbol = "fas fa-umbrella";
           break;
       }
+      // var conditionSymbol = $("<i>").addClass(symbol);
+      // var conditionText = $("<div>").addClass("eachCondition").text(" "+ day + condition);
+      // var conditionInfo = $(conditionText).append(conditionSymbol)
       var conditionSymbol = $("<i>").addClass(symbol);
-      $(".modal-title").text(condition);
-      console.log('weather api condition', condition)
-      $(".mainDisplay").append(conditionSymbol, `  ${condition}`);
+      var temp = ((response.list[weatherIndex].main.temp) * 9 / 5 - 459.67).toFixed(2);
+      var date = response.list[weatherIndex].dt_txt.slice(5, 10);
+      console.log(date);
+    
+      var conditionText = $("<div>").addClass("eachCondition").append(`<p>${day}<br>${date}</p>`);
+      $(conditionText).append(conditionSymbol, `${condition} ${temp}°F`);
+      $(".weather-info").append(conditionText)
+      
+    
       // $(".temp").text(`Current temperature: ${weather}°F `);
+      weatherIndex = weatherIndex + 8
+      }
+      
     },
     error: function() {
       console.log('weather ajax error')
@@ -445,6 +490,7 @@ function getPhotos() {
  */
 function clearCarousel() {
   $(".carousel-item").removeClass('hidden');
+  
 }
 
 function createCarousel() {
