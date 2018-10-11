@@ -346,33 +346,73 @@ function getWeatherData(position) {
       lat + "&lon=" + lng + "&APPID=f91cd80c3f28fab67ca696381fb71d30",
     dataType: "json",
     method: "get",
-    success: function (response) {
-      console.log('response for weather', response);
-      console.log('temp', temp)
-      while(i < response.list.length){
-        var condition = response.list[i].weather[0].main;
-        var symbol;
-        switch (condition) {
-          case "Haze":
-            symbol = "fas fa-cloud";
-            break;
-          case "Clouds":
-            symbol = "fas fa-cloud";
-            break;
-          case "Clear":
-            symbol = "fas fa-sun";
-            break;
-          case "Rain":
-            symbol = "fas fa-umbrella";
-            break;
-        }
-        var conditionSymbol = $("<i>").addClass(symbol);
-        var temp = ((response.list[i].main.temp) * 9 / 5 - 459.67).toFixed(2);
-        var date = response.list[i].dt_txt.slice(0, 10);
-        $(".weather-info").append(`<p>${date}</p>`);
-        $(".weather-info").append(conditionSymbol, `${condition} ${temp}°F`);
-        i += 7;
+    success: function(response) {
+      $(".weather-info").empty();
+      // var weather = response.main.temp;
+      console.log('response: ',response);
+      currentDate = new Date('2018-10-12 00:00:00');
+      console.log(currentDate.getDay());
+      console.log(response.list.length);
+      for (var weatherIndex = 4; weatherIndex < response.list.length; weatherIndex) {
+        var condition = response.list[weatherIndex].weather[0].main;
+        var date = response.list[weatherIndex].dt_txt
+        currentDate = new Date(date);
+        var dayInterval = currentDate.getDay(); 
+        switch(dayInterval) {
+          case 0:
+          day = "Sunday";
+          break;
+        case 1:
+          day = "Monday";
+          break;
+        case 2:
+          day = "Tuesday";
+          break;
+        case 3:
+          day = "Wednesday"
+          break;
+        case 4:
+          day = "Thursday"
+          break;
+        case 5:
+          day = "Friday"
+          break;
+        case 6:
+          day = "Saturday"
+          break;
+        } 
+        console.log(day);
+        console.log(date);
+      console.log('condition within weather', condition)
+      var symbol;
+      switch (condition) {
+        case "Haze":
+          symbol = "fas fa-cloud";
+          break;
+        case "Clouds":
+          symbol = "fas fa-cloud";
+          break;
+        case "Clear":
+          symbol = "fas fa-sun";
+          break;
+        case "Rain":
+          symbol = "fas fa-umbrella";
+          break;
       }
+      // var conditionSymbol = $("<i>").addClass(symbol);
+      // var conditionText = $("<div>").addClass("eachCondition").text(" "+ day + condition);
+      // var conditionInfo = $(conditionText).append(conditionSymbol)
+      var conditionSymbol = $("<i>").addClass(symbol);
+      var temp = ((response.list[weatherIndex].main.temp) * 9 / 5 - 459.67).toFixed(2);
+      var date = response.list[weatherIndex].dt_txt.slice(5, 10);
+      console.log(date);
+    
+      var conditionText = $("<div>").addClass("eachCondition").append(`<p>${day}<br>${date}</p>`);
+      $(conditionText).append(conditionSymbol, `${condition} ${temp}°F`);
+      $(".weather-info").append(conditionText)
+      // $(".temp").text(`Current temperature: ${weather}°F `);
+      weatherIndex = weatherIndex + 8
+      } 
     },
     error: function() {
       console.log('weather ajax error')
@@ -440,6 +480,7 @@ function getPhotos() {
  */
 function clearCarousel() {
   $(".carousel-item").removeClass('hidden');
+  
 }
 
 function createCarousel() {
