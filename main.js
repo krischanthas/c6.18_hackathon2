@@ -336,20 +336,13 @@ function displayVideo(response) {
  * @returns: {undefined} none
  * Gets weather data from API and appends type of weather based on data received as well as showing temperature
  */
-function getWeatherData(pos) {
-  var lat = pos.lat
-  var lng = pos.lng 
-  console.log('lat: ',lat);
-  console.log('lng: ',lng);
-  console.log("http://api.openweathermap.org/data/2.5/forecast?lat=" +
-    lat + "&lon=" + lng + "&APPID=f91cd80c3f28fab67ca696381fb71d30")
+function getWeatherData(position) {
   $(".mainDisplay").empty();
+  var lat = position.lat;
+  var lng = position.lng;
+  var i = 0;
   var ajaxConfig = {
-    url:
-      // "http://api.openweathermap.org/data/2.5/weather?q=" +
-      // cityName +
-      // "&units=imperial&APPID=f91cd80c3f28fab67ca696381fb71d30",
-     "http://api.openweathermap.org/data/2.5/forecast?lat=" +
+    url: "http://api.openweathermap.org/data/2.5/forecast?lat=" +
       lat + "&lon=" + lng + "&APPID=f91cd80c3f28fab67ca696381fb71d30",
     dataType: "json",
     method: "get",
@@ -417,12 +410,9 @@ function getWeatherData(pos) {
       var conditionText = $("<div>").addClass("eachCondition").append(`<p>${day}<br>${date}</p>`);
       $(conditionText).append(conditionSymbol, `${condition} ${temp}°F`);
       $(".weather-info").append(conditionText)
-      
-    
       // $(".temp").text(`Current temperature: ${weather}°F `);
       weatherIndex = weatherIndex + 8
-      }
-      
+      } 
     },
     error: function() {
       console.log('weather ajax error')
@@ -580,6 +570,19 @@ function checkUserInput(map) {
               map: map,
             });
             directionsService.route(directionObjects, (response, status) => {
+              console.log(response);
+              directions = response.routes[0].legs[0].steps;
+              if (status === 'OK') {
+                if (previousRoute) {
+                  previousRoute.setMap(null);
+                }
+                previousRoute = display;
+                display.setDirections(response);
+                getYelpData(pos);
+                getWeatherData(pos);
+                var directions = response.routes[0].legs[0].steps
+                $('#directionsTab').empty();
+                for (var i = 0; i < directions.length; i++) {
 
                 console.log(response);
                 directions = response.routes[0].legs[0].steps;
@@ -600,36 +603,36 @@ function checkUserInput(map) {
 
               }
             });
-
-                    // map.setCenter(pos);
-                    // marker = new google.maps.Marker({
-                    //     map: map,
-                    //     draggable: true,
-                    //     animation: google.maps.Animation.DROP,
-                    //     position: pos,
-                    //                 });
-                                })
-                            }
-                            else {
-                                $('.modal-title').text(results[0].name); 
-                                lng = results[0].geometry.location.lng();
-                                lat = results[0].geometry.location.lat(); 
-                                var pos = {
-                                    lat: lat,
-                                    lng: lng
-                                    }
-                                    getYelpData(pos);
-                                    getWeatherData(pos)
-                                map.setCenter(pos);
-                                marker = new google.maps.Marker({
-                                    map: map,
-                                    draggable: true,
-                                    animation: google.maps.Animation.DROP,
-                                    position: pos,
-                                                });
-                                   
-                                } 
-                        }
+            // map.setCenter(pos);
+            // marker = new google.maps.Marker({
+            //     map: map,
+            //     draggable: true,
+            //     animation: google.maps.Animation.DROP,
+            //     position: pos,
+            //                 });
+          },
+          function () {
+            displayModal();
+          $('.modal-title').text(results[0].name);
+          lng = results[0].geometry.location.lng();
+          lat = results[0].geometry.location.lat();
+          var pos = {
+            lat: lat,
+            lng: lng
+          }
+          getYelpData(pos);
+          getWeatherData(pos);
+          map.setCenter(pos);
+          marker = new google.maps.Marker({
+            map: map,
+            draggable: true,
+            animation: google.maps.Animation.DROP,
+            position: pos,
+          });
+            
+          })
+        } 
+      }
     }
     else {
       console.log("NO DATA PLACE ERROR MODEL")
