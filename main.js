@@ -33,14 +33,23 @@ function applyClickHandlers() {
   //$('.submitButton, .clearButton').on('click', );
   $(".clearButton").on("click", clearInput);
   $(".liveStreamButton").on("click", getVideoData);
-  $(".videoClose").on("click", function() {
+  $(".videoClose").on("click", function () {
     $(".videoModal").addClass("hidden");
   });
-  $(".modal-backdrop").on("click", function() {
+  $(".modal-backdrop").on("click", function () {
     $(".videoModal").addClass("hidden");
     // $('.iframe').get(0).stopVideo();
   });
   $("#closeModal").click(clearModal);
+  $('a[href="#infoTab"]').on("click", function () {
+    createCarousel();
+  })
+  $('a[href="#foodTab"]').on("click", function () {
+    destroyCarousel();
+  })
+  $('a[href="#directionsTab"]').on("click", function () {
+    destroyCarousel();
+  })
 }
 /************************************
  * getUserInput
@@ -52,7 +61,7 @@ function applyClickHandlers() {
 function getUserInput() {
   userInput = $(".inputForm").val();
   userInput = capitalizeFirstLetters();
-  displayModal();
+  displayMap();
 }
 /************************************
  * clearInput
@@ -70,7 +79,7 @@ function clearInput() {
  * allows to hit enter to submit values
  */
 function inputEnter() {
-  $("input").keydown(function(e) {
+  $("input").keydown(function (e) {
     if (e.keyCode == 13) {
       $(".submitButton").click();
     }
@@ -83,65 +92,66 @@ function inputEnter() {
  * Displays the map on load and the marker of location
  */
 
-function displayMap(initial = false) {   
-    getPhotos();
-   if (initial === true){
+function displayMap(initial = false) {
+  getPhotos();
+  if (initial === true) {
     var pos = {
-        lat : 33.634867,
-        lng : -117.740499
-       }
+      lat: 33.634867,
+      lng: -117.740499
     }
-    if (navigator.geolocation && initial === true) {
-       navigator.geolocation.getCurrentPosition(function(position) {
-              pos = {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude
-             }
-             currentPos = pos;
-            map.setCenter(pos);
-            marker = new google.maps.Marker({
-                map: map,
-                draggable: true,
-                animation: google.maps.Animation.DROP,
-                position: pos,
-            });
-        })
-    }
+  }
+  if (navigator.geolocation && initial === true) {
+    navigator.geolocation.getCurrentPosition(function (position) {
+      pos = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      }
+      currentPos = pos;
+      map.setCenter(pos);
+      marker = new google.maps.Marker({
+        map: map,
+        draggable: true,
+        animation: google.maps.Animation.DROP,
+        position: pos,
+      });
+    })
+  }
 
-    var mapProp = {
-        zoom: 13,
-        mapTypeControl: false,
-    };
-  
+  var mapProp = {
+    zoom: 13,
+    mapTypeControl: false,
+  };
 
-map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
-    
-    if (userInput) {         
-                checkUserInput(map);
-            }
-        else {
-                console.log("no results")
-        }
-    
-     
-    map.setCenter(pos);
-    
-        // var pos = {
-        // lat : userObj.coordinates.latitude,
-        // lng : userObj.coordinates.longitude }
-        // mapProp = {
-        //     center: new google.maps.LatLng(pos),
-        //     zoom: 13,
-        //     mapTypeControl: false,
-        // };
 
-    
-    // marker = new google.maps.Marker({
-    //     map: map,
-    //     draggable: true,
-    //     animation: google.maps.Animation.DROP,
-    //     position: pos
-    //   });
+
+  map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+
+  if (userInput) {
+    checkUserInput(map);
+  } else {
+
+  }
+
+
+  map.setCenter(pos);
+
+  // var pos = {
+  // lat : userObj.coordinates.latitude,
+  // lng : userObj.coordinates.longitude }
+  // mapProp = {
+  //     center: new google.maps.LatLng(pos),
+  //     zoom: 13,
+  //     mapTypeControl: false,
+  // };
+
+
+  // marker = new google.maps.Marker({
+  //     map: map,
+  //     draggable: true,
+  //     animation: google.maps.Animation.DROP,
+  //     position: pos
+  //   });
+
   // marker.addListener("click", toggleBounce);
   $(".container").append(map);
 }
@@ -182,8 +192,8 @@ function checkNames(response) {
 function displayModal() {
   // var name = userObj.name;
   // getWeatherData(userInput);
-  displayMap();
   $(".popup-container").css("display", "block");
+  $("#infoTab").addClass("show");
   // $('.modal-title').text(name);
   $(".close").click(clearModal);
 }
@@ -211,20 +221,19 @@ function getYelpData(position) {
       term: "food",
       latitude: lat,
       longitude: long,
-      api_key:
-        "w5ThXNvXEMnLlZYTNrvrh7Mf0ZGQNFhcP6K-LPzktl8NBZcE1_DC7X4f6ZXWb62mV8HsZkDX2Zc4p86LtU0Is9kI0Y0Ug0GvwC7FvumSylmNLfLpeikscQZw41pXW3Yx",
+      api_key: "w5ThXNvXEMnLlZYTNrvrh7Mf0ZGQNFhcP6K-LPzktl8NBZcE1_DC7X4f6ZXWb62mV8HsZkDX2Zc4p86LtU0Is9kI0Y0Ug0GvwC7FvumSylmNLfLpeikscQZw41pXW3Yx",
       categories: "restaurants, All",
       sort_by: "rating",
       radius: 5000
     },
-    success: function(response) {
+    success: function (response) {
       console.log(response);
       for (var index = 0; index < response.businesses.length; index++) {
         var pos = {
           lat: response.businesses[index].coordinates.latitude,
           lng: response.businesses[index].coordinates.longitude
         };
-    
+
         // restaurant name
         var content = response.businesses[index].name; // returns string
         // //restaurant address
@@ -241,8 +250,8 @@ function getYelpData(position) {
         // var imageUrl = response.businesses[index].image_url; // url string
         // // open-status
         // var openstatus = response.businesses[index].is_closed; // returns boolean
-        
-        
+
+
         // pop up window
         var infowindow = new google.maps.InfoWindow({
           content: content
@@ -263,8 +272,8 @@ function getYelpData(position) {
         google.maps.event.addListener(
           marker,
           "click",
-          (function(marker, content, infowindow) {
-            return function() {
+          (function (marker, content, infowindow) {
+            return function () {
               infowindow.setContent(content);
               infowindow.open(map, marker);
             };
@@ -272,7 +281,7 @@ function getYelpData(position) {
         );
       }
     },
-    error: function(err) {
+    error: function (err) {
       console.log("error");
     }
   };
@@ -296,10 +305,10 @@ function getVideoData() {
     dataType: "json",
     method: "POST",
     url: "https://s-apis.learningfuze.com/hackathon/youtube/search.php",
-    success: function(response) {
+    success: function (response) {
       displayVideo(response);
     },
-    error: function(response) {}
+    error: function (response) {}
   };
   $.ajax(ajaxConfig);
 }
@@ -404,7 +413,7 @@ function getPhotos() {
     dataType: "json",
     url: "https://api.flickr.com/services/rest",
     method: "GET",
-    success: function(response) {
+    success: function (response) {
       var photoArray = response.photos.photo;
       clearCarousel();
       for (var pIndex = 0; pIndex < photoArray.length; pIndex++) {
@@ -435,9 +444,31 @@ function getPhotos() {
  * Empties the carousel
  */
 function clearCarousel() {
-  $(".carousel-item").empty();
+  $(".carousel-item").removeClass('hidden');
 }
+
+function createCarousel() {
+  $('#carouselExampleIndicators').removeClass('hidden')
+  $('#infoTab').addClass('active')
+  $('#infoTab').addClass('show')
+  $('#foodTab').removeClass('show')
+  $('#foodTab').removeClass('active')
+  $('#directionsTab').removeClass('show')
+  $('#directionsTab').removeClass('active')
+  
+
+}
+
+function destroyCarousel() {
+  console.log("here")
+  $('#infoTab').removeClass('active')
+  $('#infoTab').removeClass('show')
+  $('#carouselExampleIndicators').addClass('hidden');
+  
+}
+
 /************************************
+ *
  * clearModal
  * @params {undefined} none
  * @returns: {undefined} none
@@ -462,42 +493,48 @@ function capitalizeFirstLetters() {
 }
 
 function checkUserInput(map) {
-    var service = new google.maps.places.PlacesService(map); 
-        var request = {
-            query: userInput + " beaches" ,
-            fields: ['name', 'geometry'],
-            // types: ['locality', "natural_feature"]
-        }
-        service.textSearch(request, getBeaches);
-        function getBeaches(results, status) { 
-            if (status === google.maps.places.PlacesServiceStatus.OK) {
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(function(position) {
-                          var currentPos = {
-                             lat: position.coords.latitude,
-                             lng: position.coords.longitude
-                          }
-                      
-                    $('.modal-title').text(results[0].name); 
-                    lng = results[0].geometry.location.lng();
-                    lat = results[0].geometry.location.lat(); 
-                    var pos = {
-                        lat: lat,
-                        lng: lng
-                        }
-                     directionObjects = {
-                            origin: currentPos,
-                            destination: pos,
-                            travelMode: "DRIVING",
-                            avoidTolls: true,
-                            unitSystem: google.maps.UnitSystem.IMPERIAL,
-                        }
-                        var directionsService = new google.maps.DirectionsService
+  var service = new google.maps.places.PlacesService(map);
+  var request = {
+    query: userInput + " beaches",
+    fields: ['name', 'geometry'],
+    // types: ['locality', "natural_feature"]
+  }
+  service.textSearch(request, getBeaches);
+
+  function getBeaches(results, status) {
+    if (results.length > 0) {
+      displayModal();
+      $('.tab-address').text(results[0].formatted_address);
+      if (status === google.maps.places.PlacesServiceStatus.OK) {
+        if (navigator.geolocation) {
+          console.log(navigator);
+          navigator.geolocation.getCurrentPosition(function (position) {
+            var currentPos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            }
+            
+            $('.modal-title').text(results[0].name);
+            lng = results[0].geometry.location.lng();
+            lat = results[0].geometry.location.lat();
+            var pos = {
+              lat: lat,
+              lng: lng
+            }
+            directionObjects = {
+              origin: currentPos,
+              destination: pos,
+              travelMode: "DRIVING",
+              avoidTolls: true,
+              unitSystem: google.maps.UnitSystem.IMPERIAL,
+            }
+            var directionsService = new google.maps.DirectionsService
             let display = new google.maps.DirectionsRenderer({
-                draggable: false,
-                map: map,
+              draggable: false,
+              map: map,
             });
             directionsService.route(directionObjects, (response, status) => {
+
                 console.log(response);
                 directions = response.routes[0].legs[0].steps;
                 if (status === 'OK') {
@@ -511,13 +548,13 @@ function checkUserInput(map) {
                     var directions = response.routes[0].legs[0].steps
                     $('#directionsTab').empty();
                     for (var i = 0; i < directions.length; i++) {
-
-                        var currentDirection = $("<p>").html(directions[i].instructions);
-                        $('#directionsTab').append(currentDirection)
-                    }
-                    
+                  var currentDirection = $("<p>").html(directions[i].instructions);
+                  $('#directionsTab').append(currentDirection)
                 }
+
+              }
             });
+
                     // map.setCenter(pos);
                     // marker = new google.maps.Marker({
                     //     map: map,
@@ -547,7 +584,9 @@ function checkUserInput(map) {
                                    
                                 } 
                         }
-       
-                
     }
+    else {
+      console.log("NO DATA PLACE ERROR MODEL")
+    }
+  }
 }
