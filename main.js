@@ -583,25 +583,11 @@ function checkUserInput(map) {
                 var directions = response.routes[0].legs[0].steps
                 $('#directionsTab').empty();
                 for (var i = 0; i < directions.length; i++) {
-
-                console.log(response);
-                directions = response.routes[0].legs[0].steps;
-                if (status === 'OK') {
-                    if (previousRoute) {
-                        previousRoute.setMap(null);
-                    }
-                    previousRoute = display;
-                    display.setDirections(response);
-                    getYelpData(pos);
-                    getWeatherData(pos)
-                    var directions = response.routes[0].legs[0].steps
-                    $('#directionsTab').empty();
-                    for (var i = 0; i < directions.length; i++) {
                   var currentDirection = $("<p>").html(directions[i].instructions);
                   $('#directionsTab').append(currentDirection)
                 }
-
               }
+  
             });
             // map.setCenter(pos);
             // marker = new google.maps.Marker({
