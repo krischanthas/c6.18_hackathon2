@@ -89,68 +89,74 @@
                     <!-- Tab panes -->
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane fade in active" id="infoTab">
-                            <div class="weather-info"></div>
+                            <div>Carousel/Weather</div>
+                            <div class='modal-title'></div>
+                            <div class='mainDisplay'></div>
+                            <div class='temp'></div>
                             <!--BootStrap Carousel -->
-                            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-                                <ol class="carousel-indicators">
-                                    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-                                    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                                    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-                                    <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
-                                    <li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
-                                </ol>
-                                <div class="carousel-inner">
-                                    <div class="carousel-item carousel-image1 active">
+                            <!-- <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                                       <ol class="carousel-indicators">
+                                           <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                                           <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                                           <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                                           <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+                                           <li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
+                                       </ol>
+                                       <div class="carousel-inner">
+                                           <div class="carousel-item carousel-image1 active">
+                               
+                                           </div>
+                                           <div class="carousel-item carousel-image2">
 
-                                    </div>
-                                    <div class="carousel-item carousel-image2">
+                                           </div>
+                                           <div class="carousel-item carousel-image3">
 
-                                    </div>
-                                    <div class="carousel-item carousel-image3">
+                                        </div>
+                                           <div class="carousel-item carousel-image4">
 
-                                    </div>
-                                    <div class="carousel-item carousel-image4">
+                                        </div>
+                                           <div class="carousel-item carousel-image5">
 
-                                    </div>
-                                    <div class="carousel-item carousel-image5">
+                                        </div>
+                                       </div>
+                                       <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                                           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                           <span class="sr-only">Previous</span>
+                                       </a>
+                                       <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                                           <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                           <span class="sr-only">Next</span>
+                                       </a>
+                                   </div>
+                               </div> -->
+                            <!--Carousel End -->
 
-                                    </div>
-                                </div>
-                                <a class="carousel-contr-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    <span class="sr-only">Previous</span>
-                                </a>
-                                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button"
-                                    data-slide="next">
-                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    <span class="sr-only">Next</span>
-                                </a>
-                            </div>
+
                         </div>
-                        <!--Carousel End -->
+                        <div role="tabpanel" class="tab-pane fade" id="foodTab">Food</div>
+                        <div role="tabpanel" class="tab-pane fade" id="directionsTab">Directions
 
-
+                        </div>
                     </div>
-                    <div role="tabpanel" class="tab-pane fade" id="foodTab">Food</div>
-                    <div role="tabpanel" class="tab-pane fade" id="directionsTab">Directions Unavailable. Please make sure geolocation is on. 
-                    
+
+
+
+
+
+
+                    <div class="modal-footer">
+                        <button type="button" class="liveStreamButton btn btn-secondary" data-dismiss="modal">Live
+                            Stream</button>
+
                     </div>
                 </div>
 
 
-
-
-
-                <div class="modal-footer">
-                    <button type="button" class="liveStreamButton btn btn-secondary" data-dismiss="modal">Live Stream</button>
-
-                </div>
-            </div>
-
-            <!-- <div class="videoModal">
+                <!-- <div class="videoModal">
             <iframe class= 'iframe hidden' width="420" height="315">
             </iframe>
         </div> -->
+
 
 
             <!-- VideoModal -->
@@ -172,9 +178,7 @@
                     </div>
                 </div>
             </div>
-
-
-            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAzXoiyq4O3y_nP9Luo3oUz4rOpYl9vCtI&callback=displayMap&libraries=places"></script>
+                <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAzXoiyq4O3y_nP9Luo3oUz4rOpYl9vCtI&callback=displayMap&libraries=places"></script>
 </body>
 
 </html>

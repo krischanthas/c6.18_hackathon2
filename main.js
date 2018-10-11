@@ -20,6 +20,7 @@ function initializeApp() {
   applyClickHandlers();
   getPhotos();
   displayMap(true);
+
 }
 /************************************
  * applyClickHandlers
@@ -122,6 +123,7 @@ function displayMap(initial = false) {
   };
 
 
+
   map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
 
   if (userInput) {
@@ -149,6 +151,7 @@ function displayMap(initial = false) {
   //     animation: google.maps.Animation.DROP,
   //     position: pos
   //   });
+
   // marker.addListener("click", toggleBounce);
   $(".container").append(map);
 }
@@ -333,18 +336,28 @@ function displayVideo(response) {
  * @returns: {undefined} none
  * Gets weather data from API and appends type of weather based on data received as well as showing temperature
  */
-function getWeatherData() {
+function getWeatherData(pos) {
+  var lat = pos.lat
+  var lng = pos.lng 
+  console.log('lat: ',lat);
+  console.log('lng: ',lng);
+  console.log("http://api.openweathermap.org/data/2.5/forecast?lat=" +
+    lat + "&lon=" + lng + "&APPID=f91cd80c3f28fab67ca696381fb71d30")
   $(".mainDisplay").empty();
-  var cityName = userObj.location.city;
   var ajaxConfig = {
-    url: "http://api.openweathermap.org/data/2.5/weather?q=" +
-      cityName +
-      "&units=imperial&APPID=f91cd80c3f28fab67ca696381fb71d30",
+    url:
+      // "http://api.openweathermap.org/data/2.5/weather?q=" +
+      // cityName +
+      // "&units=imperial&APPID=f91cd80c3f28fab67ca696381fb71d30",
+     "http://api.openweathermap.org/data/2.5/forecast?lat=" +
+      lat + "&lon=" + lng + "&APPID=f91cd80c3f28fab67ca696381fb71d30",
     dataType: "json",
     method: "get",
-    success: function (response) {
-      var weather = response.main.temp;
-      var condition = response.weather[0].main;
+    success: function(response) {
+      // var weather = response.main.temp;
+      console.log('response: ',response);
+      var condition = response.list[0].weather[0].main;
+      console.log('condition within weather', condition)
       var symbol;
       switch (condition) {
         case "Haze":
@@ -361,17 +374,20 @@ function getWeatherData() {
           break;
       }
       var conditionSymbol = $("<i>").addClass(symbol);
-      $(".modal-title").text(userInput);
+      $(".modal-title").text(condition);
+      console.log('weather api condition', condition)
       $(".mainDisplay").append(conditionSymbol, `  ${condition}`);
-      $(".temp").text(`Current temperature: ${weather}°F `);
+      // $(".temp").text(`Current temperature: ${weather}°F `);
     },
-    error: function () {
+    error: function() {
+      console.log('weather ajax error')
       if (userInput.includes("Beach")) {
         userInput = userInput.replace("Beach", "");
         getWeatherData(userInput);
       }
     }
   };
+
   $.ajax(ajaxConfig);
 }
 /************************************
@@ -518,54 +534,56 @@ function checkUserInput(map) {
               map: map,
             });
             directionsService.route(directionObjects, (response, status) => {
-              console.log(response);
-              directions = response.routes[0].legs[0].steps;
-              if (status === 'OK') {
-                if (previousRoute) {
-                  previousRoute.setMap(null);
-                }
-                previousRoute = display;
-                display.setDirections(response);
-                getYelpData(pos);
-                var directions = response.routes[0].legs[0].steps
-                $('#directionsTab').empty();
-                for (var i = 0; i < directions.length; i++) {
 
+                console.log(response);
+                directions = response.routes[0].legs[0].steps;
+                if (status === 'OK') {
+                    if (previousRoute) {
+                        previousRoute.setMap(null);
+                    }
+                    previousRoute = display;
+                    display.setDirections(response);
+                    getYelpData(pos);
+                    getWeatherData(pos)
+                    var directions = response.routes[0].legs[0].steps
+                    $('#directionsTab').empty();
+                    for (var i = 0; i < directions.length; i++) {
                   var currentDirection = $("<p>").html(directions[i].instructions);
                   $('#directionsTab').append(currentDirection)
                 }
 
               }
             });
-            // map.setCenter(pos);
-            // marker = new google.maps.Marker({
-            //     map: map,
-            //     draggable: true,
-            //     animation: google.maps.Animation.DROP,
-            //     position: pos,
-            //                 });
-          },
-          function () {
-            displayModal();
-          $('.modal-title').text(results[0].name);
-          lng = results[0].geometry.location.lng();
-          lat = results[0].geometry.location.lat();
-          var pos = {
-            lat: lat,
-            lng: lng
-          }
-          getYelpData(pos);
-          map.setCenter(pos);
-          marker = new google.maps.Marker({
-            map: map,
-            draggable: true,
-            animation: google.maps.Animation.DROP,
-            position: pos,
-          });
-            
-          })
-        } 
-      }
+
+                    // map.setCenter(pos);
+                    // marker = new google.maps.Marker({
+                    //     map: map,
+                    //     draggable: true,
+                    //     animation: google.maps.Animation.DROP,
+                    //     position: pos,
+                    //                 });
+                                })
+                            }
+                            else {
+                                $('.modal-title').text(results[0].name); 
+                                lng = results[0].geometry.location.lng();
+                                lat = results[0].geometry.location.lat(); 
+                                var pos = {
+                                    lat: lat,
+                                    lng: lng
+                                    }
+                                    getYelpData(pos);
+                                    getWeatherData(pos)
+                                map.setCenter(pos);
+                                marker = new google.maps.Marker({
+                                    map: map,
+                                    draggable: true,
+                                    animation: google.maps.Animation.DROP,
+                                    position: pos,
+                                                });
+                                   
+                                } 
+                        }
     }
     else {
       console.log("NO DATA PLACE ERROR MODEL")
