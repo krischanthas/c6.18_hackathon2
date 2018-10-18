@@ -487,6 +487,11 @@ function capitalizeFirstLetters() {
   return tempArr.join(" ");
 }
 
+
+
+
+
+
 function checkUserInput(map) {
   var service = new google.maps.places.PlacesService(map);
   var request = {
