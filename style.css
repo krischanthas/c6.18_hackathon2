@@ -206,3 +206,25 @@ display:none;
 .weather > p {
     margin-bottom: 0%;
 }
+
+.food-info{
+    height: 20vh;
+    width: 100%;
+}
+
+.rest-img {
+    width: 20%;
+}
+
+.rest-img > img{
+    width: 100%;
+}
+
+.food-info{
+    position: absolute;
+}
+
+.food-info > * {
+    display: inline-block;
+    position: relative
+}

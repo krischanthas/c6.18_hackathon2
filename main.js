@@ -227,27 +227,59 @@ function getYelpData(position) {
       radius: 5000
     },
     success: function (response) {
-      console.log(response);
+      console.log('food', response);
       for (var index = 0; index < response.businesses.length; index++) {
         var pos = {
           lat: response.businesses[index].coordinates.latitude,
           lng: response.businesses[index].coordinates.longitude
         };
-
+        // // restaurant image url
+        var foodImgUrl = response.businesses[index].image_url; // url string
+        var restImg = $("<div></div>")
+        restImg.addClass('rest-img');
+        restImg.prepend('<img src="' + foodImgUrl + '" />');
+        $('.food-info').append(restImg);
         // restaurant name
         var content = response.businesses[index].name; // returns string
+        console.log('resturant name', content);
+        console.log('resturant name hardcoded', response.businesses[index].name);
+        var restName = $("<p></p>").text(content);
+        restName.addClass('rest-name');
+        $('.food-info').append(restName);
         // //restaurant address
-        // var address = response.businesses[index].display_address[0]+response.businesses[index].display_address[1]; 
+        var address = response.businesses[index].location.display_address
+        if (address.length === 1) {
+          address = response.businesses[index].location.display_address[0];
+        } else {
+          address = response.businesses[index].location.display_address[0] +
+            ` ${response.businesses[index].location.display_address[1]}`;
+        }
+        var restAdd = $("<p></p>").text(address);
+        restAdd.addClass('rest-address');
+        $('.food-info').append(restAdd);
+        console.log('resturant address', address);
         // // restaurant type
         var category = response.businesses[index].categories[0].title; // returns string
+        var restCateg = $("<p></p>").text(category);
+        restCateg.addClass('rest-category');
+        $('.food-info').append(restCateg);
         // // phone number
         var phone = response.businesses[index].display_phone; // return string
+        var restPhone = $("<p></p>").text(phone);
+        restPhone.addClass('rest-phone');
+        $('.food-info').append(restPhone);
         // // price 
-        // var price = response.businesses[index].price; // returns string
+        var price = response.businesses[index].price; // returns string
+        var restPrice = $("<p></p>").text(price);
+        restPrice.addClass('rest-price');
+        $('.food-info').append(restPrice);
         // // rating
-        // var rating = response.businesses[index].rating; // returns int
-        // // restaurant image url
-        // var imageUrl = response.businesses[index].image_url; // url string
+        var rating = response.businesses[index].rating; // returns int
+        var restRate = $("<p></p>").text(rating);
+        restRate.addClass('rest-rate');
+        $('.food-info').append(restRate);
+
+        // $('.rest-img').append(foodImg);
         // // open-status
         // var openstatus = response.businesses[index].is_closed; // returns boolean
 
@@ -280,9 +312,12 @@ function getYelpData(position) {
           })(marker, content, infowindow)
         );
       }
+      //appending
+      // $(conditionText).append(conditionSymbol, `${condition} ${temp}°F`);
+      $(".food-info").append(content);
     },
     error: function (err) {
-      console.log("error");
+      console.log("yelperror");
     }
   };
   $.ajax(settings);
@@ -308,7 +343,7 @@ function getVideoData() {
     success: function (response) {
       displayVideo(response);
     },
-    error: function (response) {}
+    error: function (response) { }
   };
   $.ajax(ajaxConfig);
 }
@@ -346,10 +381,10 @@ function getWeatherData(position) {
       lat + "&lon=" + lng + "&APPID=f91cd80c3f28fab67ca696381fb71d30",
     dataType: "json",
     method: "get",
-    success: function(response) {
+    success: function (response) {
       $(".weather-info").empty();
       // var weather = response.main.temp;
-      console.log('response: ',response);
+      console.log('response: ', response);
       currentDate = new Date('2018-10-12 00:00:00');
       console.log(currentDate.getDay());
       console.log(response.list.length);
@@ -357,64 +392,64 @@ function getWeatherData(position) {
         var condition = response.list[weatherIndex].weather[0].main;
         var date = response.list[weatherIndex].dt_txt
         currentDate = new Date(date);
-        var dayInterval = currentDate.getDay(); 
-        switch(dayInterval) {
+        var dayInterval = currentDate.getDay();
+        switch (dayInterval) {
           case 0:
-          day = "Sunday";
-          break;
-        case 1:
-          day = "Monday";
-          break;
-        case 2:
-          day = "Tuesday";
-          break;
-        case 3:
-          day = "Wednesday"
-          break;
-        case 4:
-          day = "Thursday"
-          break;
-        case 5:
-          day = "Friday"
-          break;
-        case 6:
-          day = "Saturday"
-          break;
-        } 
+            day = "Sunday";
+            break;
+          case 1:
+            day = "Monday";
+            break;
+          case 2:
+            day = "Tuesday";
+            break;
+          case 3:
+            day = "Wednesday"
+            break;
+          case 4:
+            day = "Thursday"
+            break;
+          case 5:
+            day = "Friday"
+            break;
+          case 6:
+            day = "Saturday"
+            break;
+        }
         console.log(day);
         console.log(date);
-      console.log('condition within weather', condition)
-      var symbol;
-      switch (condition) {
-        case "Haze":
-          symbol = "fas fa-cloud";
-          break;
-        case "Clouds":
-          symbol = "fas fa-cloud";
-          break;
-        case "Clear":
-          symbol = "fas fa-sun";
-          break;
-        case "Rain":
-          symbol = "fas fa-umbrella";
-          break;
+        console.log('condition within weather', condition)
+        var symbol;
+        switch (condition) {
+          case "Haze":
+            symbol = "fas fa-cloud";
+            break;
+          case "Clouds":
+            symbol = "fas fa-cloud";
+            break;
+          case "Clear":
+            symbol = "fas fa-sun";
+            break;
+          case "Rain":
+            symbol = "fas fa-umbrella";
+            break;
+        }
+        // var conditionSymbol = $("<i>").addClass(symbol);
+        // var conditionText = $("<div>").addClass("eachCondition").text(" "+ day + condition);
+        // var conditionInfo = $(conditionText).append(conditionSymbol)
+        var conditionSymbol = $("<i>").addClass(symbol);
+        var temp = ((response.list[weatherIndex].main.temp) * 9 / 5 - 459.67).toFixed(2);
+        var date = response.list[weatherIndex].dt_txt.slice(5, 10);
+        console.log(date);
+
+        var conditionText = $("<div>").addClass("eachCondition").append(`<p>${day}<br>${date}</p>`);
+        $(conditionText).append(conditionSymbol, `${condition} ${temp}°F`);
+        $(".weather-info").append(conditionText);
+        // $(".temp").text(`Current temperature: ${weather}°F `);
+        weatherIndex = weatherIndex + 8
       }
-      // var conditionSymbol = $("<i>").addClass(symbol);
-      // var conditionText = $("<div>").addClass("eachCondition").text(" "+ day + condition);
-      // var conditionInfo = $(conditionText).append(conditionSymbol)
-      var conditionSymbol = $("<i>").addClass(symbol);
-      var temp = ((response.list[weatherIndex].main.temp) * 9 / 5 - 459.67).toFixed(2);
-      var date = response.list[weatherIndex].dt_txt.slice(5, 10);
-      console.log(date);
-    
-      var conditionText = $("<div>").addClass("eachCondition").append(`<p>${day}<br>${date}</p>`);
-      $(conditionText).append(conditionSymbol, `${condition} ${temp}°F`);
-      $(".weather-info").append(conditionText)
-      // $(".temp").text(`Current temperature: ${weather}°F `);
-      weatherIndex = weatherIndex + 8
-      } 
     },
-    error: function() {
+    error: function () {
       console.log('weather ajax error')
       if (userInput.includes("Beach")) {
         userInput = userInput.replace("Beach", "");
@@ -480,7 +515,7 @@ function getPhotos() {
  */
 function clearCarousel() {
   $(".carousel-item").removeClass('hidden');
-  
+
 }
 
 function createCarousel() {
@@ -491,7 +526,7 @@ function createCarousel() {
   $('#foodTab').removeClass('active')
   $('#directionsTab').removeClass('show')
   $('#directionsTab').removeClass('active')
-  
+
 
 }
 
@@ -500,7 +535,7 @@ function destroyCarousel() {
   $('#infoTab').removeClass('active')
   $('#infoTab').removeClass('show')
   $('#carouselExampleIndicators').addClass('hidden');
-  
+
 }
 
 /************************************
@@ -554,7 +589,7 @@ function checkUserInput(map) {
               lat: position.coords.latitude,
               lng: position.coords.longitude
             }
-            
+
             $('.modal-title').text(results[0].name);
             lng = results[0].geometry.location.lng();
             lat = results[0].geometry.location.lat();
@@ -592,7 +627,7 @@ function checkUserInput(map) {
                   $('#directionsTab').append(currentDirection)
                 }
               }
-  
+
             });
             // map.setCenter(pos);
             // marker = new google.maps.Marker({
@@ -602,27 +637,27 @@ function checkUserInput(map) {
             //     position: pos,
             //                 });
           },
-          function () {
-            displayModal();
-          $('.modal-title').text(results[0].name);
-          lng = results[0].geometry.location.lng();
-          lat = results[0].geometry.location.lat();
-          var pos = {
-            lat: lat,
-            lng: lng
-          }
-          getYelpData(pos);
-          getWeatherData(pos);
-          map.setCenter(pos);
-          marker = new google.maps.Marker({
-            map: map,
-            draggable: true,
-            animation: google.maps.Animation.DROP,
-            position: pos,
-          });
-            
-          })
-        } 
+            function () {
+              displayModal();
+              $('.modal-title').text(results[0].name);
+              lng = results[0].geometry.location.lng();
+              lat = results[0].geometry.location.lat();
+              var pos = {
+                lat: lat,
+                lng: lng
+              }
+              getYelpData(pos);
+              getWeatherData(pos);
+              map.setCenter(pos);
+              marker = new google.maps.Marker({
+                map: map,
+                draggable: true,
+                animation: google.maps.Animation.DROP,
+                position: pos,
+              });
+
+            })
+        }
       }
     }
     else {
